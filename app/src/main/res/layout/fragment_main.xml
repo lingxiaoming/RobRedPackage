@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/holo_red_light">
+
+    <ImageView
+        android:id="@+id/iv_arrow_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_arrow_right_36dp"/>
+
+    <ImageView
+        android:id="@+id/iv_arrow_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_arrow_left_36dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/bg_action_bar"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="22sp"
+        android:paddingTop="60dp"
+        android:gravity="center_horizontal"
+        android:text="快点智能助手"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:visibility="gone"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_sentiment_very_dissatisfied_white_36dp"/>
+
+    <ImageView
+        android:id="@+id/iv_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_share_white_36dp"/>
+
+    <Button
+        android:id="@+id/btn_open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="160dp"
+        android:text="開"
+        android:textColor="@android:color/white"
+        android:fontFamily="serif"
+        android:textSize="32sp"
+        android:background="@drawable/shape_open_btn"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="帮助"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_help_white_36dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/holo_orange_light"/>
+
+        <TextView
+            android:id="@+id/tv_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="设置"
+            android:gravity="center"
+            android:drawableTop="@drawable/ic_tune_white_36dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/holo_orange_light"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="18sp"
+        android:textColor="@android:color/holo_orange_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_marginTop="48dp"
+        android:layout_below="@+id/ll_title_setting"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@android:color/white"/>
+
+</RelativeLayout>

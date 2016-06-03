@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/holo_red_light">
+
+    <RelativeLayout
+        android:id="@+id/ll_title_setting"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#cd3834">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="使用说明"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_feedback"
+            android:layout_width="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:text="问题反馈"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@android:color/white"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@android:color/holo_red_light">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_setting_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="18sp"
+                    android:padding="10dp"
+                    android:text="自动抢红包"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_setting_1"
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1、微信抢红包设置"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="个人、群主消息免打扰关闭。\n微信设置-->通用-->多语言-->简体中文。\n手机系统设置-->应用程序-->微信-->打开显示通知"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/tv_setting_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="18sp"
+                    android:padding="10dp"
+                    android:text="自动加附近的人"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_setting_2"
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1、微信添加附近的人无需设置，只需要手动点击发现-->附近的人，智能助手就会自动帮您添加附近的人啦！"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/tv_setting_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="18sp"
+                    android:padding="10dp"
+                    android:text="自动加群组成员"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_setting_3"
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1、微信添加群组成员无需设置，只需要进入群组聊天页面-->群组信息(右上角)，智能助手就会自动帮您添加群组成员啦！"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/tv_setting_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="18sp"
+                    android:padding="10dp"
+                    android:text="关于我们"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_setting_4"
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_qqqun"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="QQ群：301674698"
+                        android:linksClickable="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"/>
+
+
+                </LinearLayout>
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/tv_setting_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="18sp"
+                    android:padding="10dp"
+                    android:text="免责声明"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_setting_5"
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_mianze"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="本软件仅供娱乐消遣使用，完全模拟人工操作，无广告，无病毒，不收集用户隐私信息，切勿使用本软件参与赌博等非法活动。一切因使用“快点智能助手”造成的任何后果，快点智能助手概不负责，亦不承担任何法律责任！"
+                        android:linksClickable="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"/>
+
+
+                </LinearLayout>
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@android:color/white"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="请不要卸载本软件，以免激活失效\n软件持续不断更新中...\n我们会做的越来越好哦~欢迎加群给我们提建议吧!"
+                android:gravity="center_horizontal|bottom"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

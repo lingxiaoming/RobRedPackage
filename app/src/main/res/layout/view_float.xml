@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/ll_floatview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="5dp"
+    android:background="@drawable/shape_big_float"
+    android:gravity="center"
+    android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/cb_rob_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textSize="18sp"
+            android:background="@null"
+            android:button="@drawable/selector_checkbox"
+            android:padding="5dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:text="自动抢红包" />
+
+        <CheckBox
+            android:id="@+id/cb_near_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textSize="18sp"
+            android:background="@null"
+            android:padding="5dp"
+            android:button="@drawable/selector_checkbox"
+            android:textColor="@android:color/holo_red_dark"
+            android:text="添加附近的人" />
+
+        <CheckBox
+            android:id="@+id/cb_group_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textSize="18sp"
+            android:background="@null"
+            android:button="@drawable/selector_checkbox"
+            android:padding="5dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:text="添加群组成员" />
+
+
+
+</LinearLayout>
