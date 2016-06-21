@@ -14,6 +14,7 @@ public class PrefsUtils {
      */
     public final static String PREFERENCE_ACTIVATION_CODE = "activation_code_pref";
     public final static String KEY_ACTIVATION_CODE = "activation_code_key";
+    public final static String KEY_TIMESTAMP_FREE = "free_timestamp_key";
 
     private static PrefsUtils mPrefsUtils;
     private SharedPreferences preference;
@@ -48,6 +49,26 @@ public class PrefsUtils {
 
     public String getStringByKey(String key){
         return preference.getString(key, "");
+    }
+
+    public void saveIntByKey(String key, int value){
+        Editor edit = preference.edit();
+        edit.putInt(key, value);
+        edit.commit();
+    }
+
+    public int getIntByKey(String key){
+        return preference.getInt(key, -1);
+    }
+
+    public void saveLongByKey(String key, long value){
+        Editor edit = preference.edit();
+        edit.putLong(key, value);
+        edit.commit();
+    }
+
+    public long getLongByKey(String key){
+        return preference.getLong(key, -888);
     }
 
     public void saveBooleanByKey(String key, boolean value){

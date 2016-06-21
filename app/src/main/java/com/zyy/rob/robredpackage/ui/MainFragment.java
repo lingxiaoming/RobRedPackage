@@ -24,9 +24,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.qhad.ads.sdk.adcore.Qhad;
+import com.qhad.ads.sdk.interfaces.IQhFloatbannerAd;
 import com.umeng.analytics.MobclickAgent;
 import com.zyy.rob.robredpackage.FloatService;
 import com.zyy.rob.robredpackage.R;
+import com.zyy.rob.robredpackage.tools.AndroidUtils;
+import com.zyy.rob.robredpackage.tools.DateFormat;
 import com.zyy.rob.robredpackage.tools.LogUtils;
 import com.zyy.rob.robredpackage.tools.MD5;
 import com.zyy.rob.robredpackage.tools.PrefsUtils;
@@ -36,12 +40,11 @@ import com.zyy.rob.robredpackage.tools.alipay.PayCommonResult;
 import com.zyy.rob.robredpackage.tools.alipay.RechargeInfo;
 
 /**
- *
  * User: xiaoming
  * Date: 2016-05-23
  * Time: 20:47
  * 描述一下这个类吧
- *
+ * <p>
  * Created by apple on 16/5/23.
  */
 public class MainFragment extends Fragment implements View.OnClickListener, AccessibilityManager.AccessibilityStateChangeListener {
@@ -86,7 +89,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         ivShare = view.findViewById(R.id.iv_share);
         ivShare.setOnClickListener(this);
 
-        AnimationSet animationSet= new AnimationSet(true);
+        AnimationSet animationSet = new AnimationSet(true);
         AlphaAnimation alphaAnimation = new AlphaAnimation(1f, 0.5f);
         alphaAnimation.setDuration(800);
         alphaAnimation.setRepeatMode(Animation.REVERSE);
@@ -108,18 +111,18 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         accessibilityManager = (AccessibilityManager) getActivity().getSystemService(Context.ACCESSIBILITY_SERVICE);
         accessibilityManager.addAccessibilityStateChangeListener(this);
 
-        if(isAccessibilitySettingsOn()){
+        if (isAccessibilitySettingsOn()) {
             show();
-        }else{
+        } else {
             hide();
         }
     }
 
 
-    private void createActiveCodeDialog(String code){
+    private void createActiveCodeDialog(String code) {
         final EditText inputServer = new EditText(getActivity());
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("请输入注册密码").setMessage("注册号："+code).setIcon(android.R.drawable.ic_dialog_info).setView(inputServer)
+        builder.setTitle("请输入注册密码").setMessage("注册号：" + code).setIcon(android.R.drawable.ic_dialog_info).setView(inputServer)
                 .setNegativeButton("取消", null);
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
@@ -131,15 +134,35 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         builder.show();
     }
 
-    private void createPayDialog(){
+    private void createPayDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("快点目前稳定支持自动抢红包、自动添加附近好友、自动添加群聊好友。\n立即支付1元即可激活～")
-                .setNegativeButton("取消", null);
-        builder.setPositiveButton("立即激活", new DialogInterface.OnClickListener() {
+                .setNegativeButton("免费试用", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        long time = System.currentTimeMillis();
+                        long freeTimeStamp = PrefsUtils.getInstance(getActivity()).getLongByKey(PrefsUtils.KEY_TIMESTAMP_FREE);
+                        if(freeTimeStamp == -888){
+                            freeTimeStamp = time;
+                            PrefsUtils.getInstance(getActivity()).saveLongByKey(PrefsUtils.KEY_TIMESTAMP_FREE, time);
+                        }
+                        long between = time - freeTimeStamp;
 
-            public void onClick(DialogInterface dialog, int which) {
-                pay();
-            }
+                        if(between>=0 && between<(15*60*1000)){
+                            Toast.makeText(getActivity(), "免费时间还剩："+ DateFormat.transToMMSS(15*60*1000-between), Toast.LENGTH_SHORT).show();
+                            if(!isAccessibilitySettingsOn()){
+                                gotoSwitchService();
+                            }
+                        }else {
+                            Toast.makeText(getActivity(), "免费试用结束啦，看在点点程序猿们这么辛苦的份上，您就买一份玩玩嘛T_T", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }).setPositiveButton("立即激活", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        pay();
+                    }
         });
         builder.show();
     }
@@ -147,7 +170,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
 
     /**
      * get the out_trade_no for an order. 生成商户订单号，该值在商户端应保持唯一（可自定义格式规范）
-     *
      */
 //    private String getOutTradeNo() {
 //        SimpleDateFormat format = new SimpleDateFormat("MMddHHmmss", Locale.getDefault());
@@ -159,13 +181,12 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
 //        key = key.substring(0, 15);
 //        return key;
 //    }
-
-    private void pay(){
+    private void pay() {
 
         RechargeInfo rechargeInfo = new RechargeInfo();
 //        rechargeInfo.setOrder_id(getOutTradeNo());
-        rechargeInfo.setTitle("快点_"+VersionUtils.getPackageInfo(getActivity()).versionName+"_"+
-                Build.MODEL+"_"+Build.BRAND+"_"+Build.VERSION.RELEASE+"_"+androidID);
+        rechargeInfo.setTitle("快点_" + VersionUtils.getPackageInfo(getActivity()).versionName + "_" +
+                Build.MODEL + "_" + Build.BRAND + "_" + Build.VERSION.RELEASE + "_" + androidID);
         rechargeInfo.setDesc("用户充值desc");
         rechargeInfo.setAmount("1");
         rechargeInfo.setReturn_url("http://notify.msp.hk/notify.htm");
@@ -189,63 +210,31 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
                         "JcCuswucuXxTww==");
 
 
-
-        PayCommonResult payResult = AlipayTool.newInstance().pay(rechargeInfo, getActivity(), new AlipayTool.PayResultListner()
-        {
+        PayCommonResult payResult = AlipayTool.newInstance().pay(rechargeInfo, getActivity(), new AlipayTool.PayResultListner() {
             @Override
-            public void onResult(int payResult, String msg)
-            {
-                if (AlipayTool.PAY_SUCCESS == payResult)
-                {
+            public void onResult(int payResult, String msg) {
+                if (AlipayTool.PAY_SUCCESS == payResult) {
                     Toast.makeText(getActivity(), "支付成功，点击开启让“快点”为您服务吧～", Toast.LENGTH_SHORT).show();
                     PrefsUtils.getInstance(getActivity()).saveActivationCode(activationCode);
-                } else if (AlipayTool.PAY_FAIL == payResult || AlipayTool.PAY_UNKNOW == payResult)
-                {
+                } else if (AlipayTool.PAY_FAIL == payResult || AlipayTool.PAY_UNKNOW == payResult) {
                     Toast.makeText(getActivity(), "支付失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        if (payResult.resultCode == PayCommonResult.RESULT_PARAM_ERROR)
-        {
+        if (payResult.resultCode == PayCommonResult.RESULT_PARAM_ERROR) {
             Toast.makeText(getActivity(), payResult.reasonDes, Toast.LENGTH_SHORT).show();
         }
     }
 
 
-
     private void showServices() {
-        androidID  = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
-        StringBuffer sb = new StringBuffer();
-        sb.append("AndroidId:");
-        sb.append(androidID);
+        androidID = AndroidUtils.getAndroidId(getActivity());
 
         MobclickAgent.onProfileSignIn(androidID);//友盟统计登陆的账号
 
-        sb.append("\n");
-        sb.append("AndroidId(MD5):");
-        String androidIdToMd5String = MD5.Md5(androidID+"ling4766897");
-        sb.append(androidIdToMd5String);
+        activationCode = AndroidUtils.getMyCode(getActivity());
 
-        sb.append("\n");
-        sb.append("AndroidId(最终激活码):");
-        char[] chars = androidIdToMd5String.toCharArray();
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(chars[4]);
-        stringBuffer.append(chars[7]);
-        stringBuffer.append(chars[1]);
-        stringBuffer.append(chars[6]);
-        stringBuffer.append(chars[5]);
-        sb.append(stringBuffer);
-
-        activationCode = stringBuffer.toString();
-
-        sb.append("\n");
-        sb.append("AndroidId(pref):");
-        String s = PrefsUtils.getInstance(getActivity()).getActivationCode();
-        sb.append(s);
-
-//        tvAllService.setText(sb);
         tvVersion.setText(VersionUtils.getPackageInfo(getActivity()).versionName);
 
         tvVersion.setOnLongClickListener(new View.OnLongClickListener() {
@@ -271,17 +260,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
                     createPayDialog();
                     return;
                 }
-
-                if(isAccessibilitySettingsOn()){
-                    Intent mAccessbilitySettings = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                    startActivity(mAccessbilitySettings);
-                    Toast.makeText(getActivity(), "在辅助功能-服务中\n关闭\"快点红包助手\"", Toast.LENGTH_LONG).show();
-                }else {
-                    Intent mAccessbilitySettings = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                    startActivity(mAccessbilitySettings);
-                    Toast.makeText(getActivity(), "在辅助功能-服务中\n开启\"快点红包助手\"", Toast.LENGTH_LONG).show();
-                    return;
-                }
+                gotoSwitchService();
 
                 break;
             case R.id.tv_help:
@@ -302,6 +281,19 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
                 startActivity(Intent.createChooser(shareIntent, "分享到"));
                 break;
 
+        }
+    }
+
+    private void gotoSwitchService() {
+        if (isAccessibilitySettingsOn()) {
+            Intent mAccessbilitySettings = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            startActivity(mAccessbilitySettings);
+            Toast.makeText(getActivity(), "在辅助功能-服务中\n关闭\"快点红包助手\"", Toast.LENGTH_LONG).show();
+        } else {
+            Intent mAccessbilitySettings = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            startActivity(mAccessbilitySettings);
+            Toast.makeText(getActivity(), "在辅助功能-服务中\n开启\"快点红包助手\"", Toast.LENGTH_LONG).show();
+            return;
         }
     }
 
@@ -349,11 +341,11 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
 
     @Override
     public void onAccessibilityStateChanged(boolean enabled) {
-        LogUtils.d(TAG, "onAccessibilityStateChanged "+enabled);
-        Toast.makeText(getActivity(), "onAccessibilityStateChanged "+enabled, Toast.LENGTH_LONG).show();
-        if(enabled){
+        LogUtils.d(TAG, "onAccessibilityStateChanged " + enabled);
+        Toast.makeText(getActivity(), "onAccessibilityStateChanged " + enabled, Toast.LENGTH_LONG).show();
+        if (enabled) {
             show();
-        }else {
+        } else {
             hide();
         }
     }
@@ -363,6 +355,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         Intent intent = new Intent(getActivity(), FloatService.class);
         getActivity().stopService(intent);
     }
+
     private void show() {
         btnOpen.setText("閉");
         Intent intent = new Intent(getActivity(), FloatService.class);
@@ -373,6 +366,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         super.onResume();
         MobclickAgent.onPageStart("MainFragment"); //统计页面，"MainScreen"为页面名称，可自定义
     }
+
     public void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("MainFragment");

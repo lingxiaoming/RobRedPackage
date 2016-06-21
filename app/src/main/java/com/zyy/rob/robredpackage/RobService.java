@@ -15,12 +15,16 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
+import com.qhad.ads.sdk.adcore.Qhad;
+import com.qhad.ads.sdk.interfaces.IQhFloatbannerAd;
 import com.zyy.rob.robredpackage.addnearbypeople.AddNearbyPeopleCtrl;
 import com.zyy.rob.robredpackage.base.BaseAccessibilityService;
 import com.zyy.rob.robredpackage.base.Constants;
 import com.zyy.rob.robredpackage.base.EventLineStates;
 import com.zyy.rob.robredpackage.redpackage.RedPackageCtrl;
+import com.zyy.rob.robredpackage.tools.AndroidUtils;
 import com.zyy.rob.robredpackage.tools.LogUtils;
+import com.zyy.rob.robredpackage.tools.PrefsUtils;
 import com.zyy.rob.robredpackage.ui.MainActivity;
 
 /**
@@ -37,6 +41,13 @@ public class RobService extends BaseAccessibilityService {
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
         LogUtils.e(TAG, "onAccessibilityEvent " + String.format("%02X", event.getEventType()));
+        long time = System.currentTimeMillis();
+        long freeTimeStamp = PrefsUtils.getInstance(this).getLongByKey(PrefsUtils.KEY_TIMESTAMP_FREE);
+        long between = time - freeTimeStamp;
+        if(PrefsUtils.getInstance(getApplicationContext()).getActivationCode() != AndroidUtils.getMyCode(this) && (between<0 || between>=(15*60*1000))){
+            Toast.makeText(RobService.this, "功能不可用，请购买激活", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             MyApplication.topClassname = event.getClassName().toString();

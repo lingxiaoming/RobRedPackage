@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/RobRedPackage.iml" filepath="$PROJECT_DIR$/RobRedPackage.iml" />
       <module fileurl="file://$PROJECT_DIR$/RobRedPackage_bak.iml" filepath="$PROJECT_DIR$/RobRedPackage_bak.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

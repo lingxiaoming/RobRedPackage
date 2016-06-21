@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.zyy.rob.robredpackage"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zyy.rob.robredpackage">
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+
+    <!-- ====================360 Start========================== -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- ====================360 End========================== -->
 
     <!-- ====================YMSDK Start========================== -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -23,14 +27,16 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:persistent="true"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -38,20 +44,20 @@
             android:name=".RobService"
             android:enabled="true"
             android:exported="true"
-            android:stopWithTask="false"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:stopWithTask="false">
             <intent-filter android:priority="1000">
-                <action android:name="android.accessibilityservice.AccessibilityService"/>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
 
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/accessibility"/>
+                android:resource="@xml/accessibility" />
         </service>
         <service android:name=".FloatService" />
 
 
-        <receiver android:name=".BootReceiver" >
+        <receiver android:name=".BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -65,31 +71,23 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
 
         <!-- alipay sdk end -->
 
-        <meta-data android:value="5739735f67e58ef86300152c" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5739735f67e58ef86300152c"></meta-data>
 
-
-        <!-- ====================YMSDK Start============================ -->
-
-        <activity android:name="yu.cerao.yenjap"
-                  android:launchMode="singleInstance"
-                  android:theme="@android:style/Theme.Translucent" />
-        <service
-            android:name="yu.cerao.quj" />
-        <activity android:name="sb.idf.fqmirt" android:theme="@android:style/Theme.Translucent" >
-        </activity>
+        <!-- 360 start -->
         <activity
-            android:name="anbfrf.tt.xih"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent" />
+            android:name="com.qhad.ads.sdk.adcore.QhAdActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
         <service
-            android:name="anbfrf.tt.wkmm" />
-        <receiver android:name="ehvp.nzthvehvp.nzthv.eivwi" />
-        <!-- ====================YMSDK End============================ -->
+            android:name="com.qhad.ads.sdk.service.QhAdService"
+            android:enabled="true"
+            android:exported="false"></service>
+        <!-- 360 end -->
 
     </application>
 
