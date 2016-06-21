@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">快点</string>
+    <string name="app_name">快点红包助手</string>
     <string name="desc">揭开我的封印就可以自动为您抢红包，添加附近的人和群组的人啦!\n快点是基于安卓自动化测试服务完成，模拟用户点击效果，安全绿色无污染</string>
 
     <string name="PleaseWite">请稍等...</string>

@@ -13,8 +13,13 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
+    <!-- ====================YMSDK Start========================== -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- ====================YMSDK End============================ -->
+
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -66,6 +71,25 @@
         <!-- alipay sdk end -->
 
         <meta-data android:value="5739735f67e58ef86300152c" android:name="UMENG_APPKEY"></meta-data>
+
+
+        <!-- ====================YMSDK Start============================ -->
+
+        <activity android:name="yu.cerao.yenjap"
+                  android:launchMode="singleInstance"
+                  android:theme="@android:style/Theme.Translucent" />
+        <service
+            android:name="yu.cerao.quj" />
+        <activity android:name="sb.idf.fqmirt" android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <activity
+            android:name="anbfrf.tt.xih"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent" />
+        <service
+            android:name="anbfrf.tt.wkmm" />
+        <receiver android:name="ehvp.nzthvehvp.nzthv.eivwi" />
+        <!-- ====================YMSDK End============================ -->
 
     </application>
 

@@ -1,7 +1,5 @@
 package com.zyy.rob.robredpackage.ui;
 
-import android.accessibilityservice.AccessibilityServiceInfo;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,16 +27,13 @@ import android.widget.Toast;
 import com.umeng.analytics.MobclickAgent;
 import com.zyy.rob.robredpackage.FloatService;
 import com.zyy.rob.robredpackage.R;
-import com.zyy.rob.robredpackage.RobService;
+import com.zyy.rob.robredpackage.tools.LogUtils;
 import com.zyy.rob.robredpackage.tools.MD5;
 import com.zyy.rob.robredpackage.tools.PrefsUtils;
 import com.zyy.rob.robredpackage.tools.VersionUtils;
 import com.zyy.rob.robredpackage.tools.alipay.AlipayTool;
 import com.zyy.rob.robredpackage.tools.alipay.PayCommonResult;
 import com.zyy.rob.robredpackage.tools.alipay.RechargeInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -51,6 +46,7 @@ import java.util.List;
  */
 public class MainFragment extends Fragment implements View.OnClickListener, AccessibilityManager.AccessibilityStateChangeListener {
 
+    private static final String TAG = "MainFragment";
     private Button btnOpen;//开始助手
     private TextView tvVersion;
     private String activationCode = "";
@@ -111,6 +107,12 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
 
         accessibilityManager = (AccessibilityManager) getActivity().getSystemService(Context.ACCESSIBILITY_SERVICE);
         accessibilityManager.addAccessibilityStateChangeListener(this);
+
+        if(isAccessibilitySettingsOn()){
+            show();
+        }else{
+            hide();
+        }
     }
 
 
@@ -267,24 +269,19 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
                 if (!TextUtils.equals(PrefsUtils.getInstance(getActivity()).getActivationCode(), activationCode)) {
                     //TODO 支付宝支付
                     createPayDialog();
-
                     return;
                 }
 
-
-                if (isWorked("com.zyy.rob.robredpackage.FloatService")) {
-                    hide();
-
-                } else {
-                    if (!isServiceEnabled()) {
-                        Intent mAccessbilitySettings = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                        startActivity(mAccessbilitySettings);
-                        Toast.makeText(getActivity(), "在辅助功能-服务中\n开启\"快点\"", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    show();
+                if(isAccessibilitySettingsOn()){
+                    Intent mAccessbilitySettings = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    startActivity(mAccessbilitySettings);
+                    Toast.makeText(getActivity(), "在辅助功能-服务中\n关闭\"快点红包助手\"", Toast.LENGTH_LONG).show();
+                }else {
+                    Intent mAccessbilitySettings = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    startActivity(mAccessbilitySettings);
+                    Toast.makeText(getActivity(), "在辅助功能-服务中\n开启\"快点红包助手\"", Toast.LENGTH_LONG).show();
+                    return;
                 }
-
 
                 break;
             case R.id.tv_help:
@@ -298,7 +295,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
             case R.id.iv_share:
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "https://www.pgyer.com/5KMi");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "http://zhushou.360.cn/detail/index/soft_id/3299276");
                 shareIntent.setType("text/plain");
 
                 //设置分享列表的标题，并且每次都显示分享列表
@@ -308,66 +305,68 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         }
     }
 
-    private boolean isServiceEnabled() {
-        List<AccessibilityServiceInfo> accessibilityServices =
-                accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
-        for (AccessibilityServiceInfo info : accessibilityServices) {
-            if (info.getId().equals(getActivity().getPackageName() + "/.RobService")) {
-                return true;
-            }
+
+    // To check if service is enabled
+    private boolean isAccessibilitySettingsOn() {
+        Context mContext = getContext();
+        int accessibilityEnabled = 0;
+        final String service = "com.zyy.rob.robredpackage/com.zyy.rob.robredpackage.RobService";
+        boolean accessibilityFound = false;
+        try {
+            accessibilityEnabled = Settings.Secure.getInt(
+                    mContext.getApplicationContext().getContentResolver(),
+                    android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
+        } catch (Settings.SettingNotFoundException e) {
+            LogUtils.e(TAG, "Error finding setting, default accessibility to not found: "
+                    + e.getMessage());
         }
-        return false;
+        TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
+
+        if (accessibilityEnabled == 1) {
+            LogUtils.d(TAG, "***ACCESSIBILIY IS ENABLED*** -----------------");
+            String settingValue = Settings.Secure.getString(
+                    mContext.getApplicationContext().getContentResolver(),
+                    Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            if (settingValue != null) {
+                TextUtils.SimpleStringSplitter splitter = mStringColonSplitter;
+                splitter.setString(settingValue);
+                while (splitter.hasNext()) {
+                    String accessabilityService = splitter.next();
+
+                    LogUtils.d(TAG, "-------------- > accessabilityService :: " + accessabilityService);
+                    if (accessabilityService.equalsIgnoreCase(service)) {
+                        LogUtils.d(TAG, "We've found the correct setting - accessibility is switched on!");
+                        return true;
+                    }
+                }
+            }
+        } else {
+            LogUtils.d(TAG, "***ACCESSIBILIY IS DISABLED***");
+        }
+
+        return accessibilityFound;
     }
 
     @Override
     public void onAccessibilityStateChanged(boolean enabled) {
-        updateServiceStatus();
-    }
-
-    /**
-     * 更新当前 HongbaoService 显示状态
-     */
-    private void updateServiceStatus() {
-        if (isServiceEnabled()) {
+        LogUtils.d(TAG, "onAccessibilityStateChanged "+enabled);
+        Toast.makeText(getActivity(), "onAccessibilityStateChanged "+enabled, Toast.LENGTH_LONG).show();
+        if(enabled){
             show();
-        } else {
+        }else {
             hide();
         }
     }
 
-    /**
-     * 隐藏显示歌词的TextView
-     */
     private void hide() {
         btnOpen.setText("開");
         Intent intent = new Intent(getActivity(), FloatService.class);
         getActivity().stopService(intent);
-        getActivity().stopService(new Intent(getActivity(), RobService.class));
     }
-
-    /**
-     * 显示悬浮的TextView
-     */
     private void show() {
         btnOpen.setText("閉");
         Intent intent = new Intent(getActivity(), FloatService.class);
         getActivity().startService(intent);
-        getActivity().startService(new Intent(getActivity(), RobService.class));
-    }
-
-    private boolean isWorked(String className) {
-        ActivityManager myManager = (ActivityManager) getActivity().getApplicationContext().getSystemService(
-                Context.ACTIVITY_SERVICE);
-        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager
-                .getRunningServices(30);
-        for (int i = 0; i < runningService.size(); i++) {
-            if (runningService.get(i).service.getClassName().toString()
-                    .equals(className)) {
-                return true;
-            }
-        }
-        return false;
-
     }
 
     public void onResume() {

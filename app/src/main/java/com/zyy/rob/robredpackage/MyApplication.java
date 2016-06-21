@@ -30,6 +30,5 @@ public class MyApplication extends Application {
         addNearFriend = PrefsUtils.getInstance(this).getBooleanByKey(Constants.PREF_KEY_ADDNEAR);
         addGroupFriend = PrefsUtils.getInstance(this).getBooleanByKey(Constants.PREF_KEY_ADDGROUP);
         openFloat = PrefsUtils.getInstance(this).getBooleanByKey(Constants.PREF_OPEN_FLOAT);
-
     }
 }

@@ -101,7 +101,7 @@ public class RedPackageCtrl {
 
                     Timer timer = new Timer();
 
-                    timer.schedule(task, 5000);//这里做延时，做0-x秒内随机抢
+                    timer.schedule(task, 0);//这里做延时，做0-x秒内随机抢
 
 
 

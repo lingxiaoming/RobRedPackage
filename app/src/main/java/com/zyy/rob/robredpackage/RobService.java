@@ -80,7 +80,8 @@ public class RobService extends BaseAccessibilityService {
         redPackageCtrl = new RedPackageCtrl();
         addNearbyPeopleCtrl = new AddNearbyPeopleCtrl();
 
-//        Toast.makeText(this, "onServiceConnected", Toast.LENGTH_SHORT).show();
+        startService(new Intent(this, FloatService.class));
+        Toast.makeText(this, "onServiceConnected", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -248,7 +249,9 @@ public class RobService extends BaseAccessibilityService {
         stopForeground(true);
         Intent intent = new Intent(Constants.ACTION_SERVICE_CLOSE);
         sendBroadcast(intent);
-        notificationManager.cancel(NOTIFICATION_ID);
+        if(notificationManager != null) {
+            notificationManager.cancel(NOTIFICATION_ID);
+        }
         super.onDestroy();
     }
 }

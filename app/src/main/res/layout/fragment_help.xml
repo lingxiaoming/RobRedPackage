@@ -86,7 +86,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="个人、群主消息免打扰关闭。\n微信设置-->通用-->多语言-->简体中文。\n手机系统设置-->应用程序-->微信-->打开显示通知"
+                        android:text="个人、群组消息免打扰关闭。\n微信设置-->通用-->多语言-->简体中文。\n手机系统设置-->应用程序-->微信-->打开显示通知"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"/>
 
