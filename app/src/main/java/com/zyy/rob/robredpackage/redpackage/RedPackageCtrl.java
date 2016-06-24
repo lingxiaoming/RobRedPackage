@@ -70,7 +70,7 @@ public class RedPackageCtrl {
                         return;
                     }
                     if(isChatActivity(robService, event)){//如果是聊天页面才能点击红包
-                        if(findLatestRedPackageAndClickIt(robService, event)){//找到最后一个红包Item并点击它
+                        if(findLatestRedPackageAndClickIt(robService, event.getSource())){//找到最后一个红包Item并点击它
                             isAutoClickToRedPackageDetail = true;
                             isAutoClickToRedPackageDialog = true;
                         }else {
@@ -129,19 +129,13 @@ public class RedPackageCtrl {
 
                         AccessibilityNodeInfo nodeInfo = event.getSource();
                         if(TextUtils.equals(nodeInfo.getClassName(), "android.widget.ListView") && nodeInfo.getChildCount() > 0){
-                            AccessibilityNodeInfo latestChildNodeInfo = robService.getLatestChildNodeInfo(nodeInfo);
-                            if(latestChildNodeInfo == null) return;
-
-                                AccessibilityNodeInfo money = robService.findNodeInfoByTextLast(latestChildNodeInfo, "领取红包");
-                                if(money != null){
-                                    if(robService.performClick(money)){
+                                    if(findLatestRedPackageAndClickIt(robService, nodeInfo)){
                                         isAutoClickToRedPackageDetail = true;
                                         isAutoClickToRedPackageDialog = true;
                                     }else{
                                         isAutoClickToRedPackageDetail = false;
                                         isAutoClickToRedPackageDialog = false;
                                     }
-                            }
                         }
                     }
                 }
@@ -170,10 +164,10 @@ public class RedPackageCtrl {
         return false;
     }
 
-    private boolean findLatestRedPackageAndClickIt(RobService robService, AccessibilityEvent event){
-        if(robService == null || event == null) return false;
+    private boolean findLatestRedPackageAndClickIt(RobService robService, AccessibilityNodeInfo listviewNodeInfo){
+        if(robService == null || listviewNodeInfo == null) return false;
 
-        AccessibilityNodeInfo listNodeInfo = robService.findLatestNodeInfoByClassName(event.getSource(), "android.widget.ListView");
+        AccessibilityNodeInfo listNodeInfo = robService.findLatestNodeInfoByClassName(listviewNodeInfo, "android.widget.ListView");
         if(listNodeInfo == null) return false;
 
         int[] buttomArray = new int[2];
