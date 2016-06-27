@@ -79,6 +79,15 @@
             android:name="UMENG_APPKEY"
             android:value="5739735f67e58ef86300152c"></meta-data>
 
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
         <!-- 360 start -->
         <activity
             android:name="com.qhad.ads.sdk.adcore.QhAdActivity"
