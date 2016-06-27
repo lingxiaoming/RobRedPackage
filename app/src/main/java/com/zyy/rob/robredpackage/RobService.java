@@ -15,8 +15,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
-import com.qhad.ads.sdk.adcore.Qhad;
-import com.qhad.ads.sdk.interfaces.IQhFloatbannerAd;
 import com.zyy.rob.robredpackage.addnearbypeople.AddNearbyPeopleCtrl;
 import com.zyy.rob.robredpackage.base.BaseAccessibilityService;
 import com.zyy.rob.robredpackage.base.Constants;
@@ -39,13 +37,13 @@ public class RobService extends BaseAccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+        boolean isRegister = TextUtils.equals(PrefsUtils.getInstance(getApplicationContext())
+                .getActivationCode(), AndroidUtils.getMyCode(this));//是否激活
 
         LogUtils.e(TAG, "onAccessibilityEvent " + String.format("%02X", event.getEventType()));
-        long time = System.currentTimeMillis();
-        long freeTimeStamp = PrefsUtils.getInstance(this).getLongByKey(PrefsUtils.KEY_TIMESTAMP_FREE);
-        long between = time - freeTimeStamp;
-        if(PrefsUtils.getInstance(getApplicationContext()).getActivationCode() != AndroidUtils.getMyCode(this) && (between<0 || between>=(15*60*1000))){
-            Toast.makeText(RobService.this, "功能不可用，请购买激活", Toast.LENGTH_SHORT).show();
+        int countFree = PrefsUtils.getInstance(this).getIntByKey(PrefsUtils.KEY_COUNT_FREE);
+        if(!isRegister && (countFree<0 || countFree>=3)){
+            Toast.makeText(RobService.this, "免费试用到此为止啦，去购买激活吧~", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -54,15 +52,25 @@ public class RobService extends BaseAccessibilityService {
         }
 
         if (MyApplication.addNearFriend) {//添加附近的人
-            addNearbyPeopleCtrl.dispathAddNearbyPeople(this, event);
+            if(isRegister){
+                addNearbyPeopleCtrl.dispathAddNearbyPeople(this, event);
+            }else {
+                Toast.makeText(this, "试用期间不能使用添加好友功能哦", Toast.LENGTH_SHORT).show();
+            }
         }
 
         if (MyApplication.addGroupFriend) {//添加群组里的人
-            dispathAddGroupFriendEvent(event);
+            if(isRegister) {
+                dispathAddGroupFriendEvent(event);
+            }else {
+                Toast.makeText(this, "试用期间不能使用添加好友功能哦", Toast.LENGTH_SHORT).show();
+            }
         }
 
         if(MyApplication.robRedPackage){
-            redPackageCtrl.dispathRedpackage(this, event);
+            if(isRegister || (countFree>=0 || countFree<3)) {
+                redPackageCtrl.dispathRedpackage(this, event);
+            }
         }
 
         if (true) {//测试
@@ -92,7 +100,7 @@ public class RobService extends BaseAccessibilityService {
         addNearbyPeopleCtrl = new AddNearbyPeopleCtrl();
 
         startService(new Intent(this, FloatService.class));
-        Toast.makeText(this, "onServiceConnected", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "onServiceConnected", Toast.LENGTH_SHORT).show();
     }
 
     @Override

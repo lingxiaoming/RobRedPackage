@@ -9,6 +9,11 @@
     android:gravity="center"
     android:orientation="vertical">
 
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
         <CheckBox
             android:id="@+id/cb_rob_red"
             android:layout_width="wrap_content"

@@ -14,7 +14,8 @@ public class PrefsUtils {
      */
     public final static String PREFERENCE_ACTIVATION_CODE = "activation_code_pref";
     public final static String KEY_ACTIVATION_CODE = "activation_code_key";
-    public final static String KEY_TIMESTAMP_FREE = "free_timestamp_key";
+//    public final static String KEY_TIMESTAMP_FREE = "free_timestamp_key";
+    public final static String KEY_COUNT_FREE = "free_count_key";
 
     private static PrefsUtils mPrefsUtils;
     private SharedPreferences preference;
@@ -58,7 +59,17 @@ public class PrefsUtils {
     }
 
     public int getIntByKey(String key){
-        return preference.getInt(key, -1);
+        return preference.getInt(key, -888);//这个默认是故意这样写的，避免被用户串改prefrence数据
+    }
+
+    public void saveFloatByKey(String key, float value){
+        Editor edit = preference.edit();
+        edit.putFloat(key, value);
+        edit.commit();
+    }
+
+    public float getFloatByKey(String key){
+        return preference.getFloat(key, -1);
     }
 
     public void saveLongByKey(String key, long value){
@@ -80,5 +91,4 @@ public class PrefsUtils {
     public boolean getBooleanByKey(String key){
         return preference.getBoolean(key, false);
     }
-
 }

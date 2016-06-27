@@ -12,8 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
-import com.qhad.ads.sdk.adcore.Qhad;
-import com.qhad.ads.sdk.interfaces.IQhFloatbannerAd;
 import com.umeng.analytics.MobclickAgent;
 import com.zyy.rob.robredpackage.R;
 import com.zyy.rob.robredpackage.base.Constants;
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showGG(){
-        IQhFloatbannerAd floatBanner = Qhad.showFloatbannerAd(this,"uPFlGuayEN",false, Qhad.FLOAT_BANNER_SIZE.SIZE_DEFAULT,Qhad.FLOAT_LOCATION.TOP);
+//        IQhFloatbannerAd floatBanner = Qhad.showFloatbannerAd(this,"uPFlGuayEN",false, Qhad.FLOAT_BANNER_SIZE.SIZE_DEFAULT,Qhad.FLOAT_LOCATION.TOP);
     }
 
     private void initBroadCast() {

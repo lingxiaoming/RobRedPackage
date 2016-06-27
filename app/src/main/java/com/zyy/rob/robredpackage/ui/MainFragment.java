@@ -24,16 +24,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.qhad.ads.sdk.adcore.Qhad;
-import com.qhad.ads.sdk.interfaces.IQhFloatbannerAd;
 import com.umeng.analytics.MobclickAgent;
 import com.zyy.rob.robredpackage.FloatService;
 import com.zyy.rob.robredpackage.R;
 import com.zyy.rob.robredpackage.tools.AndroidUtils;
-import com.zyy.rob.robredpackage.tools.DateFormat;
 import com.zyy.rob.robredpackage.tools.LogUtils;
-import com.zyy.rob.robredpackage.tools.MD5;
 import com.zyy.rob.robredpackage.tools.PrefsUtils;
+import com.zyy.rob.robredpackage.tools.UmengAgentUtils;
 import com.zyy.rob.robredpackage.tools.VersionUtils;
 import com.zyy.rob.robredpackage.tools.alipay.AlipayTool;
 import com.zyy.rob.robredpackage.tools.alipay.PayCommonResult;
@@ -140,27 +137,28 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
                 .setNegativeButton("免费试用", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        long time = System.currentTimeMillis();
-                        long freeTimeStamp = PrefsUtils.getInstance(getActivity()).getLongByKey(PrefsUtils.KEY_TIMESTAMP_FREE);
-                        if(freeTimeStamp == -888){
-                            freeTimeStamp = time;
-                            PrefsUtils.getInstance(getActivity()).saveLongByKey(PrefsUtils.KEY_TIMESTAMP_FREE, time);
-                        }
-                        long between = time - freeTimeStamp;
+                        UmengAgentUtils.event(getActivity(), "MainFragment_register_cancel");
 
-                        if(between>=0 && between<(15*60*1000)){
-                            Toast.makeText(getActivity(), "免费时间还剩："+ DateFormat.transToMMSS(15*60*1000-between), Toast.LENGTH_SHORT).show();
+                        int freeCount = PrefsUtils.getInstance(getActivity()).getIntByKey(PrefsUtils.KEY_COUNT_FREE);
+                        if(freeCount == -888){
+                            freeCount = 0;
+                            PrefsUtils.getInstance(getActivity()).saveIntByKey(PrefsUtils.KEY_COUNT_FREE, freeCount);
+                        }
+
+                        if(freeCount>=0 && freeCount<3){
+                            Toast.makeText(getActivity(), "剩余免费自动抢红包个数："+ (3-freeCount), Toast.LENGTH_SHORT).show();
                             if(!isAccessibilitySettingsOn()){
                                 gotoSwitchService();
                             }
                         }else {
-                            Toast.makeText(getActivity(), "免费试用结束啦，看在点点程序猿们这么辛苦的份上，您就买一份玩玩嘛T_T", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "免费试用结束啦，看在快点程序猿哥哥们这么辛苦加班赶功能的份上，您就买一份试试嘛T_T", Toast.LENGTH_LONG).show();
                         }
 
                     }
                 }).setPositiveButton("立即激活", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
+                        UmengAgentUtils.event(getActivity(), "MainFragment_register_sure");
                         pay();
                     }
         });
@@ -240,6 +238,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         tvVersion.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                UmengAgentUtils.event(getActivity(), "MainFragment_longClick");
                 ClipboardManager cmb = (ClipboardManager) getActivity().getSystemService(getActivity().CLIPBOARD_SERVICE);
                 cmb.setText(androidID);
                 Toast.makeText(getActivity(), "注册码复制成功", Toast.LENGTH_LONG).show();
@@ -255,6 +254,8 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         switch (v.getId()) {
             case R.id.btn_open:
 
+                UmengAgentUtils.event(getActivity(), "MainFragment_onClick_btn_open");
+
                 if (!TextUtils.equals(PrefsUtils.getInstance(getActivity()).getActivationCode(), activationCode)) {
                     //TODO 支付宝支付
                     createPayDialog();
@@ -265,16 +266,19 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
                 break;
             case R.id.tv_help:
             case R.id.iv_arrow_left:
+                UmengAgentUtils.event(getActivity(), "MainFragment_onClick_help");
                 ((MainActivity) getActivity()).scrollToPage(0);
                 break;
             case R.id.tv_setting:
             case R.id.iv_arrow_right:
+                UmengAgentUtils.event(getActivity(), "MainFragment_onClick_setting");
                 ((MainActivity) getActivity()).scrollToPage(2);
                 break;
             case R.id.iv_share:
+                UmengAgentUtils.event(getActivity(), "MainFragment_onClick_share");
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "http://zhushou.360.cn/detail/index/soft_id/3299276");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "微信抢红包官方下载地址http://zhushou.360.cn/detail/index/soft_id/3299276");
                 shareIntent.setType("text/plain");
 
                 //设置分享列表的标题，并且每次都显示分享列表
@@ -342,7 +346,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
     @Override
     public void onAccessibilityStateChanged(boolean enabled) {
         LogUtils.d(TAG, "onAccessibilityStateChanged " + enabled);
-        Toast.makeText(getActivity(), "onAccessibilityStateChanged " + enabled, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getActivity(), "onAccessibilityStateChanged " + enabled, Toast.LENGTH_LONG).show();
         if (enabled) {
             show();
         } else {
@@ -351,13 +355,13 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
     }
 
     private void hide() {
-        btnOpen.setText("開");
+        btnOpen.setText("开");
         Intent intent = new Intent(getActivity(), FloatService.class);
         getActivity().stopService(intent);
     }
 
     private void show() {
-        btnOpen.setText("閉");
+        btnOpen.setText("关");
         Intent intent = new Intent(getActivity(), FloatService.class);
         getActivity().startService(intent);
     }

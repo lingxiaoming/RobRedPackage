@@ -8,8 +8,8 @@ android {
         applicationId "com.zyy.rob.robredpackage"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 5
+        versionName "1.0.4"
     }
     buildTypes {
         debug {
@@ -48,5 +48,4 @@ dependencies {
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile files('libs/alipaySdk-20160516.jar')
-    compile files('libs/qhad_0.1.12.1113.jar')
 }

@@ -26,8 +26,8 @@
         android:id="@+id/view_line"
         android:layout_below="@+id/ll_title_setting"
         android:layout_width="match_parent"
-          android:layout_height="1px"
-          android:background="@android:color/white"/>
+        android:layout_height="1px"
+        android:background="@android:color/white"/>
 
 
     <LinearLayout
@@ -98,13 +98,62 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="18sp"
-                android:padding="10dp"
-                android:text="红包"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="18sp"
+                    android:padding="10dp"
+                    android:text="红包"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:text="(已为您抢到了"/>
+
+                <TextView
+                    android:id="@+id/tv_redpackage_info_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="0"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:text="个红包，共"/>
+
+                <TextView
+                    android:id="@+id/tv_redpackage_info_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="0"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:text="元哦)"/>
+
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -138,11 +187,97 @@
 
             </LinearLayout>
 
-            <SeekBar
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="随机延时抢"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@android:color/white"/>
+
+                <RelativeLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="0"
+                        android:layout_marginLeft="4dp"
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:id="@+id/tv_now_time"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="0.0秒"/>
+
+                    <TextView
+                        android:layout_marginRight="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="5"/>
+
+                    <SeekBar
+                        android:layout_below="@+id/tv_now_time"
+                        android:id="@+id/sb_red_package"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:max="50"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:text="拆红包音效"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@android:color/white"/>
+
+                <CheckBox
+                    android:id="@+id/cb_open_package"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_weight="12"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:button="@drawable/selector_checkbox"
+                    android:textColor="@android:color/holo_red_dark"
+                    />
+
+
+            </LinearLayout>
 
         </LinearLayout>
 

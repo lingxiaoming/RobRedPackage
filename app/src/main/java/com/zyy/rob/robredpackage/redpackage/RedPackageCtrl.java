@@ -15,11 +15,13 @@ import android.os.PowerManager;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Toast;
 
 import com.zyy.rob.robredpackage.MyApplication;
 import com.zyy.rob.robredpackage.RobService;
 import com.zyy.rob.robredpackage.base.Constants;
 import com.zyy.rob.robredpackage.tools.LogUtils;
+import com.zyy.rob.robredpackage.tools.PrefsUtils;
 
 import java.util.List;
 import java.util.Timer;
@@ -37,7 +39,7 @@ public class RedPackageCtrl {
     private boolean isAutoBackToChatActivity = false;
 
 
-    public void dispathRedpackage(final RobService robService, AccessibilityEvent event){
+    public void dispathRedpackage(final RobService robService, AccessibilityEvent event) {
         switch (event.getEventType()) {
             case AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED:
                 List<CharSequence> texts = event.getText();
@@ -64,32 +66,33 @@ public class RedPackageCtrl {
                 break;
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
 
-                if(TextUtils.equals(event.getClassName().toString(), Constants.ACTIVITY_MAIN)){//主页面与聊天页面同属一个activity
-                    if(isAutoBackToChatActivity){
+                if (TextUtils.equals(event.getClassName().toString(), Constants.ACTIVITY_MAIN)) {//主页面与聊天页面同属一个activity
+                    if (isAutoBackToChatActivity) {
                         isAutoBackToChatActivity = false;
                         return;
                     }
-                    if(isChatActivity(robService, event)){//如果是聊天页面才能点击红包
-                        if(findLatestRedPackageAndClickIt(robService, event.getSource())){//找到最后一个红包Item并点击它
+                    if (isChatActivity(robService, event)) {//如果是聊天页面才能点击红包
+                        if (findLatestRedPackageAndClickIt(robService, event.getSource())) {//找到最后一个红包Item并点击它
                             isAutoClickToRedPackageDetail = true;
                             isAutoClickToRedPackageDialog = true;
-                        }else {
+                        } else {
                             isAutoClickToRedPackageDetail = false;
                             isAutoClickToRedPackageDialog = false;
                         }
                     }
-                }else if(TextUtils.equals(MyApplication.topClassname, Constants.ACTIVITY_DIALOG_REDPACKAGE)){
+                } else if (TextUtils.equals(MyApplication.topClassname, Constants.ACTIVITY_DIALOG_REDPACKAGE)) {
                     final AccessibilityNodeInfo accessibilityNodeInfo = robService.findNodeInfoByClassName(event.getSource(), "android.widget.Button");
 
-                    TimerTask task = new TimerTask(){
+                    TimerTask task = new TimerTask() {
 
-                        public void run(){
+                        public void run() {
 
-                            if(robService.performClick(accessibilityNodeInfo)){//TODO 这里可以做延时拆包
+                            if (robService.performClick(accessibilityNodeInfo)) {
+//                                MyApplication.getInstance().playMononey();
                                 isAutoClickToRedPackageDetail = true;
-                            }else {
+                            } else {
                                 isAutoClickToRedPackageDetail = false;
-                                if(isAutoClickToRedPackageDialog){
+                                if (isAutoClickToRedPackageDialog) {
                                     isAutoBackToChatActivity = true;
                                     robService.performBack(robService);//红包没来得及拆开
                                 }
@@ -100,15 +103,44 @@ public class RedPackageCtrl {
                     };
 
                     Timer timer = new Timer();
+                    int delayTime = (int) (Math.random() * MyApplication.robRedPackageLateTime * 100);
+                    timer.schedule(task, delayTime);//这里做延时，做0-x秒内随机抢
 
-                    timer.schedule(task, 0);//这里做延时，做0-x秒内随机抢
+
+                } else if (TextUtils.equals(MyApplication.topClassname, Constants.ACTIVITY_REDPACKAGE_SUCCESS)) {
+
+                    if (isAutoClickToRedPackageDetail) {//是软件自动点进来抢红包的，就退出这个页面
+
+                        AccessibilityNodeInfo moneyNumNodeInfo = robService.findNodeInfoByClassNameAndPartOfText(event.getSource(), ".", "android.widget.TextView");
+                        if(moneyNumNodeInfo != null) {
+                            try {
+                                double money = Double.parseDouble(moneyNumNodeInfo.getText().toString());
+                                double moneyInt = Math.ceil(money);
+                                for(int i=0;(i<moneyInt && i < 10);i++){
+
+                                    MyApplication.getInstance().playMononey(i*150);
+                                }
+                                Toast.makeText(robService, "money! " +money+"元", Toast.LENGTH_SHORT).show();
+                                float totalMoney = PrefsUtils.getInstance(robService).getFloatByKey(Constants.PREF_KEY_MONEY);
+                                if(totalMoney < 0) totalMoney = 0;
+                                totalMoney = totalMoney + (float) money;
+                                int totalCount = PrefsUtils.getInstance(robService).getIntByKey(Constants.PREF_KEY_COUNT);
+                                if(totalCount < 0) totalCount = 0;
+                                totalCount = totalCount + 1;
+
+                                PrefsUtils.getInstance(robService).saveFloatByKey(Constants.PREF_KEY_MONEY, totalMoney);
+                                PrefsUtils.getInstance(robService).saveIntByKey(Constants.PREF_KEY_COUNT,  totalCount);
+
+                            }catch (NumberFormatException e){
+                                e.printStackTrace();
+                            }
+                        }
 
 
-
-                }else if(TextUtils.equals(MyApplication.topClassname, Constants.ACTIVITY_REDPACKAGE_SUCCESS)){
-
-                    if(isAutoClickToRedPackageDetail){//是软件自动点进来抢红包的，就退出这个页面
-                        if(robService.performBack(robService)){//退出需要知道是不是点击返回退出
+                        int count = PrefsUtils.getInstance(robService).getIntByKey(PrefsUtils.KEY_COUNT_FREE);
+                        count++;
+                        PrefsUtils.getInstance(robService).saveIntByKey(PrefsUtils.KEY_COUNT_FREE, count);
+                        if (robService.performBack(robService)) {//退出需要知道是不是点击返回退出
                             isAutoBackToChatActivity = true;
                             isAutoClickToRedPackageDetail = false;
                         }
@@ -121,21 +153,22 @@ public class RedPackageCtrl {
                 break;
             case AccessibilityEvent.TYPE_VIEW_SCROLLED://列表内容滚动，用这个来判断正在聊天
 
-                if(event.getItemCount() != event.getToIndex()+1) return;//不是最后一个item，什么都不管
+                if (event.getItemCount() != event.getToIndex() + 1) return;//不是最后一个item，什么都不管
 
-                if(TextUtils.equals(MyApplication.topClassname, Constants.ACTIVITY_MAIN)) {
+                if (TextUtils.equals(MyApplication.topClassname, Constants.ACTIVITY_MAIN)) {
                     if (isChatActivity(robService, event)) {
-                        LogUtils.d(TAG, "TYPE_VIEW_SCROLLED"+event.isScrollable()+" "+event.getItemCount()+" "+event.getCurrentItemIndex()+" "+event.getFromIndex()+" "+event.getToIndex()+" --- "+event.getAddedCount()+" "+event.getMovementGranularity()+" "+event.getRecordCount());
+                        LogUtils.d(TAG, "TYPE_VIEW_SCROLLED" + event.isScrollable() + " " + event.getItemCount() + " " + event.getCurrentItemIndex() + " " + event.getFromIndex() + " " + event.getToIndex() + " --- " + event.getAddedCount() + " " + event.getMovementGranularity() + " " + event.getRecordCount());
 
                         AccessibilityNodeInfo nodeInfo = event.getSource();
-                        if(TextUtils.equals(nodeInfo.getClassName(), "android.widget.ListView") && nodeInfo.getChildCount() > 0){
-                                    if(findLatestRedPackageAndClickIt(robService, nodeInfo)){
-                                        isAutoClickToRedPackageDetail = true;
-                                        isAutoClickToRedPackageDialog = true;
-                                    }else{
-                                        isAutoClickToRedPackageDetail = false;
-                                        isAutoClickToRedPackageDialog = false;
-                                    }
+                        if(nodeInfo == null) break;
+                        if (TextUtils.equals(nodeInfo.getClassName(), "android.widget.ListView") && nodeInfo.getChildCount() > 0) {
+                            if (findLatestRedPackageAndClickIt(robService, nodeInfo)) {
+                                isAutoClickToRedPackageDetail = true;
+                                isAutoClickToRedPackageDialog = true;
+                            } else {
+                                isAutoClickToRedPackageDetail = false;
+                                isAutoClickToRedPackageDialog = false;
+                            }
                         }
                     }
                 }
@@ -145,41 +178,51 @@ public class RedPackageCtrl {
 
     /**
      * 采取的办法是验证listview，然后判断listview下面是不是聊天操作栏
+     *
      * @param robService
      * @param event
+     *
      * @return 是否是微信聊天页面
      */
-    private boolean isChatActivity(RobService robService, AccessibilityEvent event){
-        if(robService == null || event == null) return false;
+    private boolean isChatActivity(RobService robService, AccessibilityEvent event) {
+        if (robService == null || event == null) return false;
 
         AccessibilityNodeInfo rootNodeInfo = robService.getRootInActiveWindow();//得到rootView
-        if(rootNodeInfo == null) return false;
+        if (rootNodeInfo == null) return false;
 
         AccessibilityNodeInfo backImageView = robService.findNodeInfoByContentDescribeAndClassName(rootNodeInfo, "返回", "android.widget.ImageView");
 
-        if(backImageView != null && TextUtils.equals(MyApplication.topClassname, Constants.ACTIVITY_MAIN)){
+        if (backImageView != null && TextUtils.equals(MyApplication.topClassname, Constants.ACTIVITY_MAIN)) {
             return true;
         }
 
         return false;
     }
 
-    private boolean findLatestRedPackageAndClickIt(RobService robService, AccessibilityNodeInfo listviewNodeInfo){
-        if(robService == null || listviewNodeInfo == null) return false;
+    private boolean findLatestRedPackageAndClickIt(RobService robService, AccessibilityNodeInfo listviewNodeInfo) {
+        if (robService == null || listviewNodeInfo == null) return false;
 
         AccessibilityNodeInfo listNodeInfo = robService.findLatestNodeInfoByClassName(listviewNodeInfo, "android.widget.ListView");
-        if(listNodeInfo == null) return false;
+        if (listNodeInfo == null) return false;
+
+        AccessibilityNodeInfo lastItemOfList = listNodeInfo.getChild(listNodeInfo.getChildCount()-1);
+        if(lastItemOfList != null){
+            AccessibilityNodeInfo lastItemHasRedpackage = robService.findNodeInfoByText(lastItemOfList, "领取红包");
+            if(lastItemHasRedpackage != null){
+                return robService.performClick(lastItemHasRedpackage);
+            }
+        }
 
         int[] buttomArray = new int[2];
         AccessibilityNodeInfo lastRedpackageTextView = robService.findNodeInfoByTextLast(listNodeInfo, "领取红包");
-        if(lastRedpackageTextView == null) return false;
+        if (lastRedpackageTextView == null) return false;
 
         Rect rect = new Rect();
         lastRedpackageTextView.getBoundsInScreen(rect);
         buttomArray[0] = rect.bottom;
 
         AccessibilityNodeInfo lastHadBeenOpenTextNodeInfo = robService.findLatestNodeInfoByClassNameAndPartOfTextStartAndEnd(listNodeInfo, "你领取了", "的红包", "android.widget.TextView");
-        if(lastHadBeenOpenTextNodeInfo == null){
+        if (lastHadBeenOpenTextNodeInfo == null) {
             robService.performClick(lastRedpackageTextView);
             return true;
         }
@@ -188,21 +231,22 @@ public class RedPackageCtrl {
         lastHadBeenOpenTextNodeInfo.getBoundsInScreen(rect2);
         buttomArray[1] = rect2.bottom;
 
-        if(buttomArray[0] > buttomArray[1]){//红包在"你领取了xxx的红包"之后
+//        Toast.makeText(robService, buttomArray[0]+","+buttomArray[1], Toast.LENGTH_SHORT).show();
+        if (buttomArray[0] > buttomArray[1]) {//红包在"你领取了xxx的红包"之后
             return robService.performClick(lastRedpackageTextView);
         }
         return false;
     }
 
-    public void wakeUpAndUnlock(Context context){
-        KeyguardManager km= (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+    public void wakeUpAndUnlock(Context context) {
+        KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unLock");
         //解锁
         kl.disableKeyguard();
         //获取电源管理器对象
-        PowerManager pm=(PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
-        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK,"bright");
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
         //点亮屏幕
         wl.acquire();
         //释放

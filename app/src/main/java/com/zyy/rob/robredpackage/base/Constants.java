@@ -33,6 +33,10 @@ public class Constants {
     public static final String PREF_KEY_ADDNEAR = "perf_key_addnear";//自动添加附近的人开关key
     public static final String PREF_KEY_ADDGROUP = "perf_key_addgroup";//自动添加组里的人开关key
     public static final String PREF_OPEN_FLOAT = "perf_open_float";//悬浮窗的开关
+    public static final String PREF_KEY_LATETIME = "pref_key_latetime";//抢包延时最高时间
+    public static final String PREF_KEY_OPENPACKAGE = "pref_open_package";//拆红包音效
+    public static final String PREF_KEY_MONEY = "pref_get_money";//一共抢到多少钱
+    public static final String PREF_KEY_COUNT = "pref_package_count";//一共抢到多少包
 
 
     public static final String ACTION_FLOAT_CLOSE = "broadcast_float_closed";
