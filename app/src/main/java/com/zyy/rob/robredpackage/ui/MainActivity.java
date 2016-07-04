@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        UmengUpdateAgent.update(this);
+        UmengUpdateAgent.setUpdateCheckConfig(false);
 
         fragmentList = new ArrayList<>();
         fragmentList.add(HelpFragment.newInstance());
