@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.zyy.rob.robredpackage.MyApplication;
+
 /**
  * 作者 : lxm on 2015/12/28
  * 描述 : sharedprefrence操作封装
@@ -20,15 +22,15 @@ public class PrefsUtils {
     private static PrefsUtils mPrefsUtils;
     private SharedPreferences preference;
 
-    public static PrefsUtils getInstance(Context context) {
+    public static PrefsUtils getInstance() {
         if (null == mPrefsUtils) {
-            mPrefsUtils = new PrefsUtils(context);
+            mPrefsUtils = new PrefsUtils();
         }
         return mPrefsUtils;
     }
 
-    private PrefsUtils(Context context) {
-        preference = context.getSharedPreferences(PREFERENCE_ACTIVATION_CODE, Context.MODE_PRIVATE);
+    private PrefsUtils() {
+        preference = MyApplication.getInstance().getSharedPreferences(PREFERENCE_ACTIVATION_CODE, Context.MODE_PRIVATE);
     }
 
     public void saveActivationCode(String loginAccount) {

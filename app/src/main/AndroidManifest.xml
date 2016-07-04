@@ -12,14 +12,9 @@
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-
-    <!-- ====================360 Start========================== -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- ====================360 End========================== -->
-
-    <!-- ====================YMSDK Start========================== -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- ====================YMSDK End============================ -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
 
 
     <application
@@ -77,17 +72,8 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5739735f67e58ef86300152c"></meta-data>
-
-        <!-- 360 start -->
-        <activity
-            android:name="com.qhad.ads.sdk.adcore.QhAdActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-        <service
-            android:name="com.qhad.ads.sdk.service.QhAdService"
-            android:enabled="true"
-            android:exported="false"></service>
-        <!-- 360 end -->
+            android:value="5739735f67e58ef86300152c">
+        </meta-data>
 
     </application>
 

@@ -15,7 +15,6 @@ import android.os.PowerManager;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.Toast;
 
 import com.zyy.rob.robredpackage.MyApplication;
 import com.zyy.rob.robredpackage.RobService;
@@ -88,7 +87,6 @@ public class RedPackageCtrl {
                         public void run() {
 
                             if (robService.performClick(accessibilityNodeInfo)) {
-//                                MyApplication.getInstance().playMononey();
                                 isAutoClickToRedPackageDetail = true;
                             } else {
                                 isAutoClickToRedPackageDetail = false;
@@ -104,6 +102,7 @@ public class RedPackageCtrl {
 
                     Timer timer = new Timer();
                     int delayTime = (int) (Math.random() * MyApplication.robRedPackageLateTime * 100);
+                    if(delayTime < 0) delayTime = 0;
                     timer.schedule(task, delayTime);//这里做延时，做0-x秒内随机抢
 
 
@@ -120,16 +119,16 @@ public class RedPackageCtrl {
 
                                     MyApplication.getInstance().playMononey(i*150);
                                 }
-                                Toast.makeText(robService, "money! " +money+"元", Toast.LENGTH_SHORT).show();
-                                float totalMoney = PrefsUtils.getInstance(robService).getFloatByKey(Constants.PREF_KEY_MONEY);
+//                                Toast.makeText(robService, "money! " +money+"元", Toast.LENGTH_SHORT).show();
+                                float totalMoney = PrefsUtils.getInstance().getFloatByKey(Constants.PREF_KEY_MONEY);
                                 if(totalMoney < 0) totalMoney = 0;
                                 totalMoney = totalMoney + (float) money;
-                                int totalCount = PrefsUtils.getInstance(robService).getIntByKey(Constants.PREF_KEY_COUNT);
+                                int totalCount = PrefsUtils.getInstance().getIntByKey(Constants.PREF_KEY_COUNT);
                                 if(totalCount < 0) totalCount = 0;
                                 totalCount = totalCount + 1;
 
-                                PrefsUtils.getInstance(robService).saveFloatByKey(Constants.PREF_KEY_MONEY, totalMoney);
-                                PrefsUtils.getInstance(robService).saveIntByKey(Constants.PREF_KEY_COUNT,  totalCount);
+                                PrefsUtils.getInstance().saveFloatByKey(Constants.PREF_KEY_MONEY, totalMoney);
+                                PrefsUtils.getInstance().saveIntByKey(Constants.PREF_KEY_COUNT,  totalCount);
 
                             }catch (NumberFormatException e){
                                 e.printStackTrace();
@@ -137,9 +136,9 @@ public class RedPackageCtrl {
                         }
 
 
-                        int count = PrefsUtils.getInstance(robService).getIntByKey(PrefsUtils.KEY_COUNT_FREE);
+                        int count = PrefsUtils.getInstance().getIntByKey(PrefsUtils.KEY_COUNT_FREE);
                         count++;
-                        PrefsUtils.getInstance(robService).saveIntByKey(PrefsUtils.KEY_COUNT_FREE, count);
+                        PrefsUtils.getInstance().saveIntByKey(PrefsUtils.KEY_COUNT_FREE, count);
                         if (robService.performBack(robService)) {//退出需要知道是不是点击返回退出
                             isAutoBackToChatActivity = true;
                             isAutoClickToRedPackageDetail = false;

@@ -95,9 +95,9 @@ public class FloatService extends Service implements CompoundButton.OnCheckedCha
         cbGroup = (CheckBox) mFloatView.findViewById(R.id.cb_group_add);
         cbRobRed = (CheckBox) mFloatView.findViewById(R.id.cb_rob_red);
 
-        cbRobRed.setChecked(PrefsUtils.getInstance(this).getBooleanByKey(Constants.PREF_KEY_REDPACKAGE));
-        cbNear.setChecked(PrefsUtils.getInstance(this).getBooleanByKey(Constants.PREF_KEY_ADDNEAR));
-        cbGroup.setChecked(PrefsUtils.getInstance(this).getBooleanByKey(Constants.PREF_KEY_ADDGROUP));
+        cbRobRed.setChecked(PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_REDPACKAGE));
+        cbNear.setChecked(PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_ADDNEAR));
+        cbGroup.setChecked(PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_ADDGROUP));
 
         cbNear.setOnCheckedChangeListener(this);
         cbGroup.setOnCheckedChangeListener(this);
@@ -181,15 +181,15 @@ public class FloatService extends Service implements CompoundButton.OnCheckedCha
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if(buttonView == cbNear){
             MyApplication.addNearFriend = isChecked;
-            PrefsUtils.getInstance(this).saveBooleanByKey(Constants.PREF_KEY_ADDNEAR, isChecked);
+            PrefsUtils.getInstance().saveBooleanByKey(Constants.PREF_KEY_ADDNEAR, isChecked);
             sendBroadcast(new Intent(Constants.ACTION_FLOAT_CLOSE));
         }else if(buttonView == cbGroup){
             MyApplication.addGroupFriend = isChecked;
-            PrefsUtils.getInstance(this).saveBooleanByKey(Constants.PREF_KEY_ADDGROUP, isChecked);
+            PrefsUtils.getInstance().saveBooleanByKey(Constants.PREF_KEY_ADDGROUP, isChecked);
             sendBroadcast(new Intent(Constants.ACTION_FLOAT_CLOSE));
         }else if(buttonView == cbRobRed){
             MyApplication.robRedPackage = isChecked;
-            PrefsUtils.getInstance(this).saveBooleanByKey(Constants.PREF_KEY_REDPACKAGE, isChecked);
+            PrefsUtils.getInstance().saveBooleanByKey(Constants.PREF_KEY_REDPACKAGE, isChecked);
             sendBroadcast(new Intent(Constants.ACTION_FLOAT_CLOSE));
         }
     }

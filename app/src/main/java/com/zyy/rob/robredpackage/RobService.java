@@ -37,18 +37,20 @@ public class RobService extends BaseAccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        boolean isRegister = TextUtils.equals(PrefsUtils.getInstance(getApplicationContext())
-                .getActivationCode(), AndroidUtils.getMyCode(this));//是否激活
+        boolean isRegister = TextUtils.equals(PrefsUtils.getInstance()
+                .getActivationCode(), AndroidUtils.getMyCode());//是否激活
 
         LogUtils.e(TAG, "onAccessibilityEvent " + String.format("%02X", event.getEventType()));
-        int countFree = PrefsUtils.getInstance(this).getIntByKey(PrefsUtils.KEY_COUNT_FREE);
+        int countFree = PrefsUtils.getInstance().getIntByKey(PrefsUtils.KEY_COUNT_FREE);
         if(!isRegister && (countFree<0 || countFree>=3)){
-            Toast.makeText(RobService.this, "免费试用到此为止啦，去购买激活吧~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RobService.this, "免费试用次数用完了哦，激活才能继续为您抢红包呢~", Toast.LENGTH_SHORT).show();
+            //todo 发送广播让开关变成激活，或者留个激活按钮出来
             return;
         }
 
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             MyApplication.topClassname = event.getClassName().toString();
+            LogUtils.d(TAG, "TopClass:"+MyApplication.topClassname);
         }
 
         if (MyApplication.addNearFriend) {//添加附近的人
@@ -123,7 +125,7 @@ public class RobService extends BaseAccessibilityService {
         // params
         int smallIconId = R.drawable.ic_launcher_small;
         Bitmap largeIcon = ((BitmapDrawable) getResources().getDrawable(R.mipmap.ic_launcher)).getBitmap();
-        String info = "快点智能助手打开啦";
+        String info = "快点抢红包打开啦";
 
         // action when clicked
         Intent intent = new Intent(this, MainActivity.class);
@@ -204,8 +206,8 @@ public class RobService extends BaseAccessibilityService {
                     performBack(this);
                 }
             }else if(TextUtils.equals(className, Constants.ACTIVITY_GROUPMENBERADD)){//组成员发送添加请求
-                AccessibilityNodeInfo accessibilityNodeInfo = findNodeInfoByTextAndClassName(event.getSource(), "发送", "android.widget.Button");
-//                performClick(accessibilityNodeInfo);
+                AccessibilityNodeInfo accessibilityNodeInfo = findNodeInfoByTextAndClassName(event.getSource(), "发送", "android.widget.TextView");
+                performClick(accessibilityNodeInfo);
 //                    Toast.makeText(this, "点击加为朋友成功", Toast.LENGTH_LONG).show();
 
                 AccessibilityNodeInfo backImageView = findNodeInfoByContentDescribeAndClassName(event.getSource(), "返回", "android.widget.ImageView");

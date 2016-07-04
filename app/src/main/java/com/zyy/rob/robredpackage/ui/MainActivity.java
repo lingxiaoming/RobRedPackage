@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setCurrentItem(1);
 
         initBroadCast();
-
     }
 
     public void showGG(){

@@ -85,8 +85,8 @@ public class AddNearbyPeopleCtrl {
                 }
 //                    Toast.makeText(this, "点击打招呼成功", Toast.LENGTH_LONG).show();
 
-            } else if (className.equals(Constants.ACTIVITY_NEARBYADDFRIREND)) {//与附近的一个人聊天页面或加为好友
-                AccessibilityNodeInfo accessibilityNodeInfo = robService.findNodeInfoByTextAndClassName(nodeInfo, "加为朋友", "android.widget.Button");
+            } else if (className.equals(Constants.ACTIVITY_NEARBYADDFRIREND2)) {//与附近的一个人聊天页面或加为好友//这里变成发送了，微信升级了
+                AccessibilityNodeInfo accessibilityNodeInfo = robService.findNodeInfoByTextAndClassName(nodeInfo, "发送", "android.widget.TextView");
                 robService.performClick(accessibilityNodeInfo);
 //                    Toast.makeText(this, "点击加为朋友成功", Toast.LENGTH_LONG).show();
                 LogUtils.e(TAG, "add "+currentDoing);

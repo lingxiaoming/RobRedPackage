@@ -24,7 +24,7 @@ public class MyApplication extends Application {
     public static boolean robRedPackage = false;
     public static boolean addNearFriend = false;
     public static boolean addGroupFriend = false;
-    public static boolean openPackage = false;
+    public static boolean openPackage = false;//拆红包声音
     public static boolean openFloat = true;//悬浮窗开关
     public static int robRedPackageLateTime = 0;//以秒＊10为单位，如延迟2.3秒，这个值就是23
 
@@ -44,13 +44,13 @@ public class MyApplication extends Application {
         super.onCreate();
         myApplication = this;
 
-        PrefsUtils.getInstance(this).saveBooleanByKey(Constants.PREF_KEY_REDPACKAGE, true);
-        robRedPackage = PrefsUtils.getInstance(this).getBooleanByKey(Constants.PREF_KEY_REDPACKAGE);
-        addNearFriend = PrefsUtils.getInstance(this).getBooleanByKey(Constants.PREF_KEY_ADDNEAR);
-        addGroupFriend = PrefsUtils.getInstance(this).getBooleanByKey(Constants.PREF_KEY_ADDGROUP);
-        openFloat = PrefsUtils.getInstance(this).getBooleanByKey(Constants.PREF_OPEN_FLOAT);
-        openPackage = PrefsUtils.getInstance(this).getBooleanByKey(Constants.PREF_KEY_OPENPACKAGE);
-        robRedPackageLateTime = PrefsUtils.getInstance(this).getIntByKey(Constants.PREF_KEY_LATETIME);
+        PrefsUtils.getInstance().saveBooleanByKey(Constants.PREF_KEY_REDPACKAGE, true);
+        robRedPackage = PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_REDPACKAGE);
+        addNearFriend = PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_ADDNEAR);
+        addGroupFriend = PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_ADDGROUP);
+        openFloat = PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_OPEN_FLOAT);
+        openPackage = PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_OPENPACKAGE);
+        robRedPackageLateTime = PrefsUtils.getInstance().getIntByKey(Constants.PREF_KEY_LATETIME);
 
         //指定声音池的最大音频流数目为10，声音品质为5
         pool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
@@ -61,7 +61,9 @@ public class MyApplication extends Application {
     }
 
     public void playMononey(long delay){
-        handler.sendEmptyMessageDelayed(1, delay);
+        if(PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_OPENPACKAGE)){
+            handler.sendEmptyMessageDelayed(1, delay);
+        }
 
     }
 
@@ -74,4 +76,8 @@ public class MyApplication extends Application {
         }
     });
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+    }
 }

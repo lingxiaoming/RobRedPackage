@@ -86,7 +86,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="个人、群组消息免打扰关闭。\n微信设置-->通用-->多语言-->简体中文。\n手机系统设置-->应用程序-->微信-->打开显示通知\n注意:手机请不要锁屏（我可不能帮您解锁哦），微信不要在pc登陆，否则失效"
+                        android:text="@string/text_robreadpackage_waring"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"/>
 
@@ -211,11 +211,10 @@
                         android:id="@+id/tv_free"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="将本软件三个主页截图，并配上文字#360手机助手搜索快点红包助手#分享到朋友圈，并获得16个以上赞，凭截图向我们的客服获取激活码。\n或者您也可以在360移动应用市场（360手机助手）给我们五星好评并截图给客服获取激活码哦～"
+                        android:text="点击主页面右上角，分享到朋友圈，并获得10个以上赞，凭截图向我们的客服获取激活码。\n或者您也可以在360移动应用市场（360手机助手）给我们好评并截图给客服获取激活码哦～"
                         android:linksClickable="true"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"/>
-
 
                 </LinearLayout>
 
@@ -245,7 +244,7 @@
                         android:id="@+id/tv_mianze"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="本软件仅供娱乐消遣使用，完全模拟人工操作，无广告，无病毒，不收集用户隐私信息，切勿使用本软件参与赌博等非法活动。一切因使用“快点智能助手”造成的任何后果，快点智能助手概不负责，亦不承担任何法律责任！"
+                        android:text="本软件仅供娱乐消遣使用，完全模拟人工操作，无广告，无病毒，不收集用户隐私信息，切勿使用本软件参与赌博等非法活动。一切因使用“快点抢红包”造成的任何后果，快点智能助手概不负责，亦不承担任何法律责任！"
                         android:linksClickable="true"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"/>

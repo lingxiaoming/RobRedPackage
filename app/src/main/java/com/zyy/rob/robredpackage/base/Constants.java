@@ -19,6 +19,7 @@ public class Constants {
     public static final String ACTIVITY_NEARBYLIST_FIRST = "com.tencent.mm.plugin.nearby.ui.NearbyFriendsIntroUI";//首次进入附近的人是“开始查看”页面
     public static final String ACTIVITY_NEARBYDETAIL = "com.tencent.mm.plugin.profile.ui.ContactInfoUI";//附近一个人详细资料
     public static final String ACTIVITY_NEARBYADDFRIREND = "com.tencent.mm.ui.chatting.ChattingUI";//与附近的一个人聊天页面或加为好友
+    public static final String ACTIVITY_NEARBYADDFRIREND2 = "com.tencent.mm.ui.contact.SayHiEditUI";//与附近的一个人聊天页面或打招呼页面(新版微信)
 
     public static final String ACTIVITY_GROUPMENBERLIST = "com.tencent.mm.plugin.chatroom.ui.ChatroomInfoUI";//群组成员列表页面grid
     public static final String ACTIVITY_GROUPMENBERLIST2 = "com.tencent.mm.plugin.chatroom.ui.SeeRoomMemberUI";//组成员列表list
