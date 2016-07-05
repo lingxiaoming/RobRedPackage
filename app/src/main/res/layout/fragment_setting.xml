@@ -2,13 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/holo_red_light">
+                android:background="@android:color/holo_red_dark">
 
     <LinearLayout
         android:id="@+id/ll_title_setting"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="#cd3834"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -34,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/view_line"
-        android:background="@android:color/holo_red_light"
+        android:background="@android:color/holo_red_dark"
         android:orientation="vertical">
 
         <LinearLayout
@@ -89,7 +88,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="1px"
             android:padding="5dp"
             android:background="@android:color/white"/>
 
@@ -150,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    android:text="元!)"/>
+                    android:text="元)"/>
 
 
             </LinearLayout>
@@ -283,7 +282,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="1px"
             android:padding="5dp"
             android:background="@android:color/white"/>
 

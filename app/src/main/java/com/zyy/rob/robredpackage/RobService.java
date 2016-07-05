@@ -20,7 +20,6 @@ import com.zyy.rob.robredpackage.base.BaseAccessibilityService;
 import com.zyy.rob.robredpackage.base.Constants;
 import com.zyy.rob.robredpackage.base.EventLineStates;
 import com.zyy.rob.robredpackage.redpackage.RedPackageCtrl;
-import com.zyy.rob.robredpackage.tools.AndroidUtils;
 import com.zyy.rob.robredpackage.tools.LogUtils;
 import com.zyy.rob.robredpackage.tools.PrefsUtils;
 import com.zyy.rob.robredpackage.ui.MainActivity;
@@ -37,15 +36,15 @@ public class RobService extends BaseAccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        boolean isRegister = TextUtils.equals(PrefsUtils.getInstance()
-                .getActivationCode(), AndroidUtils.getMyCode());//是否激活
+        boolean isRegister = MyApplication.getInstance().hasRegiste();//是否激活
 
         LogUtils.e(TAG, "onAccessibilityEvent " + String.format("%02X", event.getEventType()));
-        int countFree = PrefsUtils.getInstance().getIntByKey(PrefsUtils.KEY_COUNT_FREE);
-        if(!isRegister && (countFree<0 || countFree>=3)){
-            Toast.makeText(RobService.this, "免费试用次数用完了哦，激活才能继续为您抢红包呢~", Toast.LENGTH_SHORT).show();
-            //todo 发送广播让开关变成激活，或者留个激活按钮出来
-            return;
+        if(!isRegister){
+            int countFree = PrefsUtils.getInstance().getIntByKey(PrefsUtils.KEY_COUNT_FREE);
+            if(countFree<0 || countFree>=2){
+                Toast.makeText(RobService.this, "免费试用次数用完了啦，激活才能继续为您抢红包哦~", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
@@ -70,9 +69,7 @@ public class RobService extends BaseAccessibilityService {
         }
 
         if(MyApplication.robRedPackage){
-            if(isRegister || (countFree>=0 || countFree<3)) {
-                redPackageCtrl.dispathRedpackage(this, event);
-            }
+            redPackageCtrl.dispathRedpackage(this, event);
         }
 
         if (true) {//测试

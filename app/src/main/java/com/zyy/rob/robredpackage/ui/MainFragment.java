@@ -178,6 +178,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
             public void onClick(DialogInterface dialog, int which) {
 
                 PrefsUtils.getInstance().saveActivationCode(inputServer.getText().toString());
+                MyApplication.getInstance().updateCode();
             }
         });
         builder.show();
@@ -197,8 +198,8 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
                             PrefsUtils.getInstance().saveIntByKey(PrefsUtils.KEY_COUNT_FREE, freeCount);
                         }
 
-                        if(freeCount>=0 && freeCount<3){
-                            Toast.makeText(getActivity(), "剩余免费自动抢红包个数："+ (3-freeCount), Toast.LENGTH_SHORT).show();
+                        if(freeCount>=0 && freeCount<2){
+                            Toast.makeText(getActivity(), "剩余免费自动抢红包个数："+ (2-freeCount), Toast.LENGTH_SHORT).show();
                             if(!isAccessibilitySettingsOn()){
                                 gotoSwitchService();
                             }
@@ -267,6 +268,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
                 if (AlipayTool.PAY_SUCCESS == payResult) {
                     Toast.makeText(getActivity(), "支付成功，点击开启让“快点抢红包”为您服务吧～", Toast.LENGTH_SHORT).show();
                     PrefsUtils.getInstance().saveActivationCode(activationCode);
+                    MyApplication.getInstance().updateCode();
                 } else if (AlipayTool.PAY_FAIL == payResult || AlipayTool.PAY_UNKNOW == payResult) {
                     Toast.makeText(getActivity(), "支付失败", Toast.LENGTH_SHORT).show();
                 }
@@ -454,7 +456,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         }
 
         if(!TextUtils.equals(PrefsUtils.getInstance().getActivationCode(),
-                AndroidUtils.getMyCode()) && (freeCount<0 || freeCount>=3)){
+                AndroidUtils.getMyCode()) && (freeCount<0 || freeCount>=2)){
             btnOpen.setText("激活");
         }else {
             btnOpen.setText("开");
@@ -471,7 +473,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         }
 
         if(!TextUtils.equals(PrefsUtils.getInstance().getActivationCode(),
-                AndroidUtils.getMyCode()) && (freeCount<0 || freeCount>=3)){
+                AndroidUtils.getMyCode()) && (freeCount<0 || freeCount>=2)){
             btnOpen.setText("激活");
         }else {
             btnOpen.setText("关");
