@@ -98,8 +98,9 @@ public class RobService extends BaseAccessibilityService {
         redPackageCtrl = new RedPackageCtrl();
         addNearbyPeopleCtrl = new AddNearbyPeopleCtrl();
 
-        startService(new Intent(this, FloatService.class));
-//        Toast.makeText(this, "onServiceConnected", Toast.LENGTH_SHORT).show();
+        if(MyApplication.openFloat)
+            startService(new Intent(this, FloatService.class));
+        else stopService(new Intent(this, FloatService.class));
     }
 
     @Override
@@ -223,7 +224,7 @@ public class RobService extends BaseAccessibilityService {
                     int childCount = accessibilityNodeInfo.getChildCount();
                     eventLineStates.currentDoing = 1;
                     eventLineStates.maxListCount = childCount;
-                    if (childCount >= 1) {
+                    if (childCount > 1) {
                         accessibilityNodeInfo.getChild(eventLineStates.currentDoing).performAction(AccessibilityNodeInfo.ACTION_CLICK);
 
 //                        Toast.makeText(this, "添加下一页附近的人", Toast.LENGTH_LONG).show();

@@ -29,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
-import com.zyy.rob.robredpackage.FloatService;
 import com.zyy.rob.robredpackage.MyApplication;
 import com.zyy.rob.robredpackage.R;
 import com.zyy.rob.robredpackage.tools.AndroidUtils;
@@ -53,7 +52,7 @@ import java.lang.reflect.Field;
  * Date: 2016-05-23
  * Time: 20:47
  * 描述一下这个类吧
- * <p>
+ * <p/>
  * Created by apple on 16/5/23.
  */
 public class MainFragment extends Fragment implements View.OnClickListener, AccessibilityManager.AccessibilityStateChangeListener {
@@ -66,6 +65,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
     private View ivShare, ivArrowLeft, ivArrowRight;
 
     private String androidID;
+    private String localShareImagepath;
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -74,25 +74,21 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         return fragment;
     }
 
-    private boolean showAskPermission(){
-        return (Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1);
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case 200:
-                boolean writeAccepted = grantResults[0]== PackageManager.PERMISSION_GRANTED;
-                if(writeAccepted){
+                boolean writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (writeAccepted) {
                     File file = new File(localShareImagepath);
-                    if(!file.exists()){
+                    if (!file.exists()) {
                         try {
                             file.createNewFile();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-                }else {
+                } else {
                     Toast.makeText(MyApplication.getInstance(), "写入文件权限获取失败，您将不能分享朋友圈", Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -107,20 +103,19 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         return rootView;
     }
 
-    private String localShareImagepath;
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //        copyResToSdcard(Environment.getExternalStorageDirectory().getPath());
 
-        localShareImagepath=Environment.getExternalStorageDirectory().getPath()+"/"+"qrcode.png";
-        if(showAskPermission()){
+        localShareImagepath = Environment.getExternalStorageDirectory().getPath() + "/" + "qrcode.png";
+        if (showAskPermission()) {
             String[] perms = {"android.permission.WRITE_EXTERNAL_STORAGE"};
             int permsRequestCode = 200;
             requestPermissions(perms, permsRequestCode);
-        }else {
+        } else {
             File file = new File(localShareImagepath);
-            if(!file.exists()){
+            if (!file.exists()) {
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
@@ -167,6 +162,32 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
 
     }
 
+    private boolean showAskPermission() {
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
+    private void showServices() {
+        androidID = AndroidUtils.getAndroidId();
+
+        MobclickAgent.onProfileSignIn(androidID);//友盟统计登陆的账号
+
+        activationCode = AndroidUtils.getMyCode();
+
+        tvVersion.setText(VersionUtils.getPackageInfo(getActivity()).versionName);
+
+        tvVersion.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                UmengAgentUtils.event(getActivity(), "MainFragment_longClick");
+                ClipboardManager cmb = (ClipboardManager) getActivity().getSystemService(getActivity().CLIPBOARD_SERVICE);
+                cmb.setText(androidID);
+                Toast.makeText(getActivity(), "注册码复制成功", Toast.LENGTH_LONG).show();
+                createActiveCodeDialog(androidID);
+                return false;
+            }
+        });
+
+    }
 
     private void createActiveCodeDialog(String code) {
         final EditText inputServer = new EditText(getActivity());
@@ -186,39 +207,38 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
 
     private void createPayDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("快点目前稳定支持自动抢红包、自动添加附近好友、自动添加群聊好友。\n立即支付1元即可激活～")
+        builder.setMessage("快点目前稳定支持微信的自动抢红包、自动添加附近好友、自动添加群聊好友。\n立即支付1元即可激活～")
                 .setNegativeButton("免费试用", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         UmengAgentUtils.event(getActivity(), "MainFragment_register_cancel");
 
                         int freeCount = PrefsUtils.getInstance().getIntByKey(PrefsUtils.KEY_COUNT_FREE);
-                        if(freeCount == -888){
+                        if (freeCount == -888) {
                             freeCount = 0;
                             PrefsUtils.getInstance().saveIntByKey(PrefsUtils.KEY_COUNT_FREE, freeCount);
                         }
 
-                        if(freeCount>=0 && freeCount<2){
-                            Toast.makeText(getActivity(), "剩余免费自动抢红包个数："+ (2-freeCount), Toast.LENGTH_SHORT).show();
-                            if(!isAccessibilitySettingsOn()){
+                        if (freeCount >= 0 && freeCount < 2) {
+                            Toast.makeText(getActivity(), "剩余免费自动抢红包个数：" + (2 - freeCount), Toast.LENGTH_SHORT).show();
+                            if (!isAccessibilitySettingsOn()) {
                                 gotoSwitchService();
                             }
-                        }else {
+                        } else {
                             Toast.makeText(getActivity(), "免费试用结束，请激活永久使用", Toast.LENGTH_LONG).show();
                         }
 
                     }
                 }).setPositiveButton("立即激活", new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
-                        UmengAgentUtils.event(getActivity(), "MainFragment_register_sure");
-                        pay();
-                    }
+            public void onClick(DialogInterface dialog, int which) {
+                UmengAgentUtils.event(getActivity(), "MainFragment_register_sure");
+                pay();
+            }
         });
         builder.setCancelable(false);
         builder.show();
     }
-
 
     /**
      * get the out_trade_no for an order. 生成商户订单号，该值在商户端应保持唯一（可自定义格式规范）
@@ -271,6 +291,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
                     MyApplication.getInstance().updateCode();
                 } else if (AlipayTool.PAY_FAIL == payResult || AlipayTool.PAY_UNKNOW == payResult) {
                     Toast.makeText(getActivity(), "支付失败", Toast.LENGTH_SHORT).show();
+                    showFailDialog();
                 }
             }
         });
@@ -280,28 +301,27 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         }
     }
 
+    private void showFailDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("没办法用支付宝购买？您当然也可以免费使用哦，到帮助页面里看看吧")
+                .setTitle("哎呀！支付失败了")
+                .setNegativeButton("继续支付", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        UmengAgentUtils.event(getActivity(), "MainFragment_register_sure");
 
-    private void showServices() {
-        androidID = AndroidUtils.getAndroidId();
+                        pay();
 
-        MobclickAgent.onProfileSignIn(androidID);//友盟统计登陆的账号
+                    }
+                }).setPositiveButton("我要免费使用", new DialogInterface.OnClickListener() {
 
-        activationCode = AndroidUtils.getMyCode();
-
-        tvVersion.setText(VersionUtils.getPackageInfo(getActivity()).versionName);
-
-        tvVersion.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                UmengAgentUtils.event(getActivity(), "MainFragment_longClick");
-                ClipboardManager cmb = (ClipboardManager) getActivity().getSystemService(getActivity().CLIPBOARD_SERVICE);
-                cmb.setText(androidID);
-                Toast.makeText(getActivity(), "注册码复制成功", Toast.LENGTH_LONG).show();
-                createActiveCodeDialog(androidID);
-                return false;
+            public void onClick(DialogInterface dialog, int which) {
+                UmengAgentUtils.event(getActivity(), "MainFragment_register_go_help");
+                ((MainActivity) getActivity()).scrollToPage(0);
             }
         });
-
+        builder.setCancelable(true);
+        builder.show();
     }
 
     @Override
@@ -312,11 +332,22 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
                 UmengAgentUtils.event(getActivity(), "MainFragment_onClick_btn_open");
 
                 if (!TextUtils.equals(PrefsUtils.getInstance().getActivationCode(), activationCode)) {
-                    //TODO 支付宝支付
-                    createPayDialog();
-                    return;
+                    int freeCount = PrefsUtils.getInstance().getIntByKey(PrefsUtils.KEY_COUNT_FREE);
+                    if (freeCount == -888) {
+                        freeCount = 0;
+                        PrefsUtils.getInstance().saveIntByKey(PrefsUtils.KEY_COUNT_FREE, freeCount);
+                    }
+
+                    if (freeCount < 0 || freeCount >= 2) {//试用结束
+                        //TODO 支付宝支付
+                        createPayDialog();
+                    } else{
+                        gotoSwitchService();
+                    }
+                } else {
+                    gotoSwitchService();
                 }
-                gotoSwitchService();
+
                 break;
             case R.id.tv_help:
             case R.id.iv_arrow_left:
@@ -338,7 +369,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
                 shareIntent.putExtra("Kdescription", "快点抢红包神器，官方下载地址http://zhushou.360.cn/detail/index/soft_id/3299276");//微信朋友圈专用
 
                 copyResToSdcard(Environment.getExternalStorageDirectory().getPath());
-                Uri image = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/qrcode.png"));
+                Uri image = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath() + "/qrcode.png"));
 //                Uri uri = Uri.parse("file:///android_asset/qrcode.png");
 //                Toast.makeText(getActivity(), ""+Environment.getExternalStorageDirectory().getPath(), Toast.LENGTH_LONG).show();
                 shareIntent.putExtra(Intent.EXTRA_STREAM, image);
@@ -352,24 +383,24 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
     /*
 * 将raw里的文件copy到sd卡下
 * */
-    public void copyResToSdcard(String name){//name为sd卡下制定的路径
+    public void copyResToSdcard(String name) {//name为sd卡下制定的路径
         Field[] raw = R.raw.class.getFields();
         for (Field r : raw) {
             try {
                 //     System.out.println("R.raw." + r.getName());
-                int id=getResources().getIdentifier(r.getName(), "raw", MyApplication.getInstance().getPackageName());
-                if(r.getName().equals("qrcode")){
-                    String path=name+"/"+r.getName()+".png";
+                int id = getResources().getIdentifier(r.getName(), "raw", MyApplication.getInstance().getPackageName());
+                if (r.getName().equals("qrcode")) {
+                    String path = name + "/" + r.getName() + ".png";
                     File file = new File(path);
-                    if(!file.exists()){
+                    if (!file.exists()) {
                         file.createNewFile();
                     }
                     BufferedOutputStream bufEcrivain = new BufferedOutputStream((new FileOutputStream(file)));
                     BufferedInputStream VideoReader = new BufferedInputStream(getResources().openRawResource(id));
-                    byte[] buff = new byte[20*1024];
+                    byte[] buff = new byte[20 * 1024];
                     int len;
-                    while( (len = VideoReader.read(buff)) > 0 ){
-                        bufEcrivain.write(buff,0,len);
+                    while ((len = VideoReader.read(buff)) > 0) {
+                        bufEcrivain.write(buff, 0, len);
                     }
                     bufEcrivain.flush();
                     bufEcrivain.close();
@@ -395,6 +426,60 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         }
     }
 
+    @Override
+    public void onAccessibilityStateChanged(boolean enabled) {
+        LogUtils.d(TAG, "onAccessibilityStateChanged " + enabled);
+//        Toast.makeText(getActivity(), "onAccessibilityStateChanged " + enabled, Toast.LENGTH_LONG).show();
+        if (enabled) {
+            show();
+        } else {
+            hide();
+        }
+    }
+
+    private void hide() {
+        int freeCount = PrefsUtils.getInstance().getIntByKey(PrefsUtils.KEY_COUNT_FREE);
+        if (freeCount == -888) {
+            freeCount = 0;
+            PrefsUtils.getInstance().saveIntByKey(PrefsUtils.KEY_COUNT_FREE, freeCount);
+        }
+
+        if (!TextUtils.equals(PrefsUtils.getInstance().getActivationCode(),
+                AndroidUtils.getMyCode()) && (freeCount < 0 || freeCount >= 2)) {
+            btnOpen.setText("激活");
+        } else {
+            btnOpen.setText("开");
+//            Intent intent = new Intent(MyApplication.getInstance(), FloatService.class);
+//            MyApplication.getInstance().stopService(intent);
+        }
+    }
+
+    private void show() {
+        int freeCount = PrefsUtils.getInstance().getIntByKey(PrefsUtils.KEY_COUNT_FREE);
+        if (freeCount == -888) {
+            freeCount = 0;
+            PrefsUtils.getInstance().saveIntByKey(PrefsUtils.KEY_COUNT_FREE, freeCount);
+        }
+
+        if (!TextUtils.equals(PrefsUtils.getInstance().getActivationCode(),
+                AndroidUtils.getMyCode()) && (freeCount < 0 || freeCount >= 2)) {
+            btnOpen.setText("激活");
+        } else {
+            btnOpen.setText("关");
+//            Intent intent = new Intent(MyApplication.getInstance(), FloatService.class);
+//            MyApplication.getInstance().startService(intent);
+        }
+    }
+
+    public void onResume() {
+        super.onResume();
+        if (isAccessibilitySettingsOn()) {
+            show();
+        } else {
+            hide();
+        }
+        MobclickAgent.onPageStart("MainFragment"); //统计页面，"MainScreen"为页面名称，可自定义
+    }
 
     // To check if service is enabled
     private boolean isAccessibilitySettingsOn() {
@@ -435,61 +520,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
         }
 
         return accessibilityFound;
-    }
-
-    @Override
-    public void onAccessibilityStateChanged(boolean enabled) {
-        LogUtils.d(TAG, "onAccessibilityStateChanged " + enabled);
-//        Toast.makeText(getActivity(), "onAccessibilityStateChanged " + enabled, Toast.LENGTH_LONG).show();
-        if (enabled) {
-            show();
-        } else {
-            hide();
-        }
-    }
-
-    private void hide() {
-        int freeCount = PrefsUtils.getInstance().getIntByKey(PrefsUtils.KEY_COUNT_FREE);
-        if(freeCount == -888){
-            freeCount = 0;
-            PrefsUtils.getInstance().saveIntByKey(PrefsUtils.KEY_COUNT_FREE, freeCount);
-        }
-
-        if(!TextUtils.equals(PrefsUtils.getInstance().getActivationCode(),
-                AndroidUtils.getMyCode()) && (freeCount<0 || freeCount>=2)){
-            btnOpen.setText("激活");
-        }else {
-            btnOpen.setText("开");
-            Intent intent = new Intent(MyApplication.getInstance(), FloatService.class);
-            MyApplication.getInstance().stopService(intent);
-        }
-    }
-
-    private void show() {
-        int freeCount = PrefsUtils.getInstance().getIntByKey(PrefsUtils.KEY_COUNT_FREE);
-        if(freeCount == -888){
-            freeCount = 0;
-            PrefsUtils.getInstance().saveIntByKey(PrefsUtils.KEY_COUNT_FREE, freeCount);
-        }
-
-        if(!TextUtils.equals(PrefsUtils.getInstance().getActivationCode(),
-                AndroidUtils.getMyCode()) && (freeCount<0 || freeCount>=2)){
-            btnOpen.setText("激活");
-        }else {
-            btnOpen.setText("关");
-            Intent intent = new Intent(MyApplication.getInstance(), FloatService.class);
-            MyApplication.getInstance().startService(intent);
-        }
-    }
-
-    public void onResume() {
-        super.onResume();
-        if (isAccessibilitySettingsOn()) {
-            show();
-        } else {
-            hide();
-        }
-        MobclickAgent.onPageStart("MainFragment"); //统计页面，"MainScreen"为页面名称，可自定义
     }
 
     public void onPause() {

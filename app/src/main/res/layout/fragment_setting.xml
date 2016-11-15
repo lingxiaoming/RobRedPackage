@@ -13,21 +13,25 @@
 
         <TextView
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="设置"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:layout_height="wrap_content"/>
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
 
     <View
         android:id="@+id/view_line"
-        android:layout_below="@+id/ll_title_setting"
         android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_below="@+id/ll_title_setting"
         android:background="@android:color/white"/>
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,40 +48,39 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="18sp"
                 android:padding="10dp"
-                android:text="悬浮窗"/>
+                android:text="悬浮窗"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="18sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:text="开启悬浮窗"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"/>
 
                 <CheckBox
                     android:id="@+id/cb_open_float"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:layout_weight="12"
-                    android:gravity="center"
-                    android:checked="true"
-                    android:enabled="false"
                     android:layout_gravity="center"
-                    android:padding="5dp"
+                    android:layout_weight="12"
                     android:button="@drawable/selector_checkbox"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:padding="5dp"
                     android:textColor="@android:color/holo_red_dark"
+                    android:textSize="18sp"
                     />
 
 
@@ -89,8 +92,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:padding="5dp"
-            android:background="@android:color/white"/>
+            android:background="@android:color/white"
+            android:padding="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -105,51 +108,51 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/holo_orange_light"
-                    android:textSize="18sp"
                     android:padding="10dp"
-                    android:text="红包"/>
+                    android:text="微信红包"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="(已为您抢到了"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:text="(已为您抢到了"/>
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/tv_redpackage_info_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/holo_orange_light"
-                    android:textSize="20sp"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
-                    android:text="0"/>
+                    android:text="0"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="个红包，共"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:text="个红包，共"/>
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/tv_redpackage_info_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/holo_orange_light"
-                    android:textSize="20sp"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
-                    android:text="0"/>
+                    android:text="0"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="元)"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:text="元)"/>
+                    android:textSize="16sp"/>
 
 
             </LinearLayout>
@@ -157,30 +160,30 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:text="自动抢红包"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"/>
 
                 <CheckBox
                     android:id="@+id/cb_red_package"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:layout_weight="12"
-                    android:gravity="center"
                     android:layout_gravity="center"
-                    android:padding="5dp"
+                    android:layout_weight="12"
                     android:button="@drawable/selector_checkbox"
+                    android:gravity="center"
+                    android:padding="5dp"
                     android:textColor="@android:color/holo_red_dark"
+                    android:textSize="18sp"
                     />
 
 
@@ -189,57 +192,57 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="随机延时抢"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@android:color/white"/>
+                    android:text="随机延时抢"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"/>
 
                 <RelativeLayout
-                    android:layout_marginLeft="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp">
 
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:text="0"
                         android:layout_marginLeft="4dp"
+                        android:text="0"
                         android:textColor="@android:color/white"/>
 
                     <TextView
                         android:id="@+id/tv_now_time"
                         android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:text="0.0秒"/>
+                        android:layout_centerHorizontal="true"
+                        android:text="0.0秒"
+                        android:textColor="@android:color/white"/>
 
                     <TextView
-                        android:layout_marginRight="4dp"
                         android:layout_width="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:text="5"/>
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="4dp"
+                        android:text="5"
+                        android:textColor="@android:color/white"/>
 
                     <SeekBar
-                        android:layout_below="@+id/tv_now_time"
                         android:id="@+id/sb_red_package"
-                        android:layout_weight="1"
                         android:layout_width="match_parent"
-                        android:max="50"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_now_time"
+                        android:layout_weight="1"
+                        android:max="50"/>
 
                 </RelativeLayout>
 
@@ -249,31 +252,153 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:text="拆红包音效"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"/>
 
                 <CheckBox
                     android:id="@+id/cb_open_package"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:layout_weight="12"
-                    android:gravity="center"
                     android:layout_gravity="center"
-                    android:padding="5dp"
+                    android:layout_weight="12"
                     android:button="@drawable/selector_checkbox"
+                    android:gravity="center"
+                    android:padding="5dp"
                     android:textColor="@android:color/holo_red_dark"
+                    android:textSize="18sp"
                     />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="2"
+                        android:text="关键字过滤"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"/>
+
+                    <EditText
+                        android:id="@+id/et_filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="添加过滤词"
+                        android:lines="1"
+                        android:maxLength="10"
+                        android:paddingLeft="10dp"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_add_filter_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-30dp"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_control_point_white_36dp"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:button="@drawable/selector_checkbox"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="18sp"
+                        />
+
+                </LinearLayout>
+
+                <com.zyy.rob.robredpackage.view.AutoNextLineLayout
+                    android:id="@+id/auto_tv_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="2"
+                        android:text="抢红包后回复"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"/>
+
+                    <EditText
+                        android:id="@+id/et_reply"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="添加回复词"
+                        android:lines="1"
+                        android:maxLength="10"
+                        android:paddingLeft="10dp"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_add_reply_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-30dp"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_control_point_white_36dp"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_reply"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:button="@drawable/selector_checkbox"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="18sp"
+                        />
+
+                </LinearLayout>
+
+                <com.zyy.rob.robredpackage.view.AutoNextLineLayout
+                    android:id="@+id/auto_tv_reply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
 
 
             </LinearLayout>
@@ -283,8 +408,164 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:padding="5dp"
-            android:background="@android:color/white"/>
+            android:background="@android:color/white"
+            android:padding="5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="QQ红包"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(已为您抢到了"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_redpackage_info_count_qq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="0"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="个红包，共"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_redpackage_info_money_qq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:text="0"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="元)"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="自动抢红包"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"/>
+
+                <CheckBox
+                    android:id="@+id/cb_red_package_qq"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="12"
+                    android:button="@drawable/selector_checkbox"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="18sp"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="延时抢"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="4dp"
+                        android:text="0"
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:id="@+id/tv_now_time_qq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="0.0秒"
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="4dp"
+                        android:text="5"
+                        android:textColor="@android:color/white"/>
+
+                    <SeekBar
+                        android:id="@+id/sb_red_package_qq"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_now_time_qq"
+                        android:layout_weight="1"
+                        android:max="50"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -294,38 +575,38 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="18sp"
                 android:padding="10dp"
-                android:text="加粉"/>
+                android:text="加粉"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="18sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:text="自动添加附近的人"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"/>
 
                 <CheckBox
                     android:id="@+id/cb_near_add"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:layout_weight="12"
-                    android:gravity="center"
                     android:layout_gravity="center"
-                    android:padding="5dp"
+                    android:layout_weight="12"
                     android:button="@drawable/selector_checkbox"
+                    android:gravity="center"
+                    android:padding="5dp"
                     android:textColor="@android:color/holo_red_dark"
+                    android:textSize="18sp"
                     />
 
 
@@ -334,30 +615,30 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:text="自动添加群组成员"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"/>
 
                 <CheckBox
                     android:id="@+id/cb_group_add"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:layout_weight="12"
-                    android:gravity="center"
                     android:layout_gravity="center"
-                    android:padding="5dp"
+                    android:layout_weight="12"
                     android:button="@drawable/selector_checkbox"
+                    android:gravity="center"
+                    android:padding="5dp"
                     android:textColor="@android:color/holo_red_dark"
+                    android:textSize="18sp"
                     />
 
 
@@ -369,11 +650,11 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="10px"
+            android:background="@android:color/white"
             android:padding="5dp"
-            android:visibility="gone"
-            android:background="@android:color/white"/>
+            android:visibility="gone"/>
 
 
     </LinearLayout>
-
+    </ScrollView>
 </RelativeLayout>

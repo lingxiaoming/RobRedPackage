@@ -59,6 +59,16 @@
         android:textSize="32sp"
         android:background="@drawable/shape_open_btn"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_open"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="10sp"
+        android:text="若发现软件失效，请关闭再重新打开即可"
+        android:textColor="@android:color/holo_orange_light"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

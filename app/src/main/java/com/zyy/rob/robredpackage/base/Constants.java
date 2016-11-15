@@ -25,7 +25,6 @@ public class Constants {
     public static final String ACTIVITY_GROUPMENBERLIST2 = "com.tencent.mm.plugin.chatroom.ui.SeeRoomMemberUI";//组成员列表list
     public static final String ACTIVITY_GROUPMENBERADD = "com.tencent.mm.plugin.profile.ui.SayHiWithSnsPermissionUI";//组成员发送添加请求
 
-    public static final String ACTIITY_GROUPCHAT = "";//组聊页面
     public static final String ACTIVITY_DIALOG_REDPACKAGE = "com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyReceiveUI";//红包dialog
     public static final String ACTIVITY_REDPACKAGE_SUCCESS = "com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyDetailUI";//领取红包成功
 
@@ -38,6 +37,8 @@ public class Constants {
     public static final String PREF_KEY_OPENPACKAGE = "pref_open_package";//拆红包音效
     public static final String PREF_KEY_MONEY = "pref_get_money";//一共抢到多少钱
     public static final String PREF_KEY_COUNT = "pref_package_count";//一共抢到多少包
+    public static final String PREF_KEY_FILTER = "pref_filter";//过滤词开关
+    public static final String PREF_KEY_REPLY = "pref_reply";//回复词开关
 
 
     public static final String ACTION_FLOAT_CLOSE = "broadcast_float_closed";

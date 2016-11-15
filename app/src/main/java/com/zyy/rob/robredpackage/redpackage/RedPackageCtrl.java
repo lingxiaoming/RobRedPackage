@@ -11,6 +11,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
@@ -23,6 +24,7 @@ import com.zyy.rob.robredpackage.tools.LogUtils;
 import com.zyy.rob.robredpackage.tools.PrefsUtils;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,6 +38,7 @@ public class RedPackageCtrl {
     private boolean isAutoClickToRedPackageDetail = false;
     private boolean isAutoClickToRedPackageDialog = false;
     private boolean isAutoBackToChatActivity = false;
+    private boolean robRedPackageSuccess = false;
 
 
     public void dispathRedpackage(final RobService robService, AccessibilityEvent event) {
@@ -52,12 +55,25 @@ public class RedPackageCtrl {
                             if (event.getParcelableData() != null
                                     && event.getParcelableData() instanceof Notification) {
                                 Notification notification = (Notification) event.getParcelableData();
-                                PendingIntent pendingIntent = notification.contentIntent;
-                                try {
-                                    pendingIntent.send();
-                                } catch (PendingIntent.CanceledException e) {
-                                    e.printStackTrace();
-                                }
+                                final PendingIntent pendingIntent = notification.contentIntent;
+
+
+//                                    TimerTask task = new TimerTask() {
+//
+//                                        public void run() {
+                                            try {
+                                                pendingIntent.send();
+                                            } catch (PendingIntent.CanceledException e) {
+                                                e.printStackTrace();
+                                            }
+//                                        }
+//
+//                                    };
+
+//                                    Timer timer = new Timer();
+//                                    timer.schedule(task, 5000);//这里做延时，做0-x秒内随机抢
+
+
                             }
                         }
                     }
@@ -68,9 +84,32 @@ public class RedPackageCtrl {
                 if (TextUtils.equals(event.getClassName().toString(), Constants.ACTIVITY_MAIN)) {//主页面与聊天页面同属一个activity
                     if (isAutoBackToChatActivity) {
                         isAutoBackToChatActivity = false;
+
+                        if(robRedPackageSuccess){//上次抢到红包了
+                            robRedPackageSuccess = false;
+                            if(MyApplication.getInstance().replySwitch) {
+                                AccessibilityNodeInfo editNodeInfo = robService.findNodeInfoByClassName(event.getSource(), "android.widget.EditText");
+                                if (editNodeInfo != null) {
+                                    Bundle arguments = new Bundle();
+
+                                    int replysSize = MyApplication.getInstance().replys.size();
+                                    if(replysSize > 0) {
+                                        String reply = MyApplication.getInstance().replys.get(new Random().nextInt(replysSize));
+                                        arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, reply);
+                                        editNodeInfo.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
+                                        AccessibilityNodeInfo buttonNodeInfo = robService.findNodeInfoByTextAndClassName(event.getSource(), "发送", "android.widget.Button");
+                                        if (buttonNodeInfo != null) {
+                                            robService.performClick(buttonNodeInfo);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         return;
                     }
                     if (isChatActivity(robService, event)) {//如果是聊天页面才能点击红包
+
                         if (findLatestRedPackageAndClickIt(robService, event.getSource())) {//找到最后一个红包Item并点击它
                             isAutoClickToRedPackageDetail = true;
                             isAutoClickToRedPackageDialog = true;
@@ -82,11 +121,13 @@ public class RedPackageCtrl {
                 } else if (TextUtils.equals(MyApplication.topClassname, Constants.ACTIVITY_DIALOG_REDPACKAGE)) {
                     final AccessibilityNodeInfo accessibilityNodeInfo = robService.findNodeInfoByClassName(event.getSource(), "android.widget.Button");
 
+                    //todo 找到制定textview 过滤关键字 TalkApplication.getInstance().filters
                     TimerTask task = new TimerTask() {
 
                         public void run() {
 
                             if (robService.performClick(accessibilityNodeInfo)) {
+                                robRedPackageSuccess = true;
                                 isAutoClickToRedPackageDetail = true;
                             } else {
                                 isAutoClickToRedPackageDetail = false;
@@ -208,7 +249,7 @@ public class RedPackageCtrl {
         if(lastItemOfList != null){
             AccessibilityNodeInfo lastItemHasRedpackage = robService.findNodeInfoByText(lastItemOfList, "领取红包");
             if(lastItemHasRedpackage != null){
-                return robService.performClick(lastItemHasRedpackage);
+                return clickGetRedPackageTextNodeInfo(robService, lastItemHasRedpackage);
             }
         }
 
@@ -222,8 +263,7 @@ public class RedPackageCtrl {
 
         AccessibilityNodeInfo lastHadBeenOpenTextNodeInfo = robService.findLatestNodeInfoByClassNameAndPartOfTextStartAndEnd(listNodeInfo, "你领取了", "的红包", "android.widget.TextView");
         if (lastHadBeenOpenTextNodeInfo == null) {
-            robService.performClick(lastRedpackageTextView);
-            return true;
+            return clickGetRedPackageTextNodeInfo(robService, lastRedpackageTextView);
         }
 
         Rect rect2 = new Rect();
@@ -232,9 +272,23 @@ public class RedPackageCtrl {
 
 //        Toast.makeText(robService, buttomArray[0]+","+buttomArray[1], Toast.LENGTH_SHORT).show();
         if (buttomArray[0] > buttomArray[1]) {//红包在"你领取了xxx的红包"之后
-            return robService.performClick(lastRedpackageTextView);
+            return clickGetRedPackageTextNodeInfo(robService, lastRedpackageTextView);
         }
         return false;
+    }
+
+    private boolean clickGetRedPackageTextNodeInfo(RobService robService, AccessibilityNodeInfo lastRedTextNodeInfo) {
+        if(MyApplication.getInstance().filterSwitch){
+            AccessibilityNodeInfo parentNodeInfo = lastRedTextNodeInfo.getParent();
+            AccessibilityNodeInfo redContent = parentNodeInfo.getChild(0);//红包文字内容
+            String text = redContent.getText().toString();
+            for (String string:MyApplication.getInstance().filters) {
+                if(TextUtils.equals(text, string)){
+                    return false;
+                }
+            }
+        }
+        return robService.performClick(lastRedTextNodeInfo);
     }
 
     public void wakeUpAndUnlock(Context context) {

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <shape>
+
+            <solid android:color="#ffc8c8c8" />
+
+            <corners
+                android:topLeftRadius="17dp"
+                android:topRightRadius="17dp"
+                android:bottomLeftRadius="17dp"
+                android:bottomRightRadius="17dp" />
+
+            <stroke
+                android:width="0.5dp"
+                android:color="#bbbbbbbb" />
+
+        </shape>
+    </item>
+    <item android:state_pressed="true" >
+        <shape>
+
+            <solid android:color="#ffc8c8c8" />
+
+            <corners
+                android:topLeftRadius="17dp"
+                android:topRightRadius="17dp"
+                android:bottomLeftRadius="17dp"
+                android:bottomRightRadius="17dp" />
+
+            <stroke
+                android:width="0.5dp"
+                android:color="#bbbbbbbb" />
+
+        </shape>
+    </item>
+    <item android:state_selected="true">
+        <shape>
+
+            <solid android:color="#ffc8c8c8" />
+
+            <corners
+                android:topLeftRadius="17dp"
+                android:topRightRadius="17dp"
+                android:bottomLeftRadius="17dp"
+                android:bottomRightRadius="17dp" />
+
+            <stroke
+                android:width="0.5dp"
+                android:color="#bbbbbbbb" />
+
+        </shape>
+    </item>
+    <item>
+        <shape>
+
+            <solid android:color="@android:color/white" />
+
+            <corners
+                android:topLeftRadius="17dp"
+                android:topRightRadius="17dp"
+                android:bottomLeftRadius="17dp"
+                android:bottomRightRadius="17dp" />
+
+            <stroke
+                android:width="0.5dp"
+                android:color="#bbbbbbbb" />
+
+        </shape>
+
+
+    </item>
+</selector>

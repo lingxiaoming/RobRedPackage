@@ -6,6 +6,11 @@ import android.content.SharedPreferences.Editor;
 
 import com.zyy.rob.robredpackage.MyApplication;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * 作者 : lxm on 2015/12/28
  * 描述 : sharedprefrence操作封装
@@ -18,6 +23,8 @@ public class PrefsUtils {
     public final static String KEY_ACTIVATION_CODE = "activation_code_key";
 //    public final static String KEY_TIMESTAMP_FREE = "free_timestamp_key";
     public final static String KEY_COUNT_FREE = "free_count_key";
+    public final static String KEY_FILTER_WORDS = "key_filter_words";
+    public final static String KEY_REPLY_WORDS = "key_reply_words";
 
     private static PrefsUtils mPrefsUtils;
     private SharedPreferences preference;
@@ -48,6 +55,17 @@ public class PrefsUtils {
         Editor edit = preference.edit();
         edit.putString(key, value);
         edit.commit();
+    }
+
+    public void saveStringSetByKey(String key, List<String> values){
+        Editor edit = preference.edit();
+        edit.putStringSet(key, new HashSet<>(values));
+        edit.commit();
+    }
+
+    public List<String> getStringListByKey(String key){
+        Set set = preference.getStringSet(key, new HashSet<String>());
+        return new ArrayList<>(set);
     }
 
     public String getStringByKey(String key){
