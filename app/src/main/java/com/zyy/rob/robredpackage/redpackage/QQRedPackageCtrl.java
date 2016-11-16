@@ -3,7 +3,7 @@ package com.zyy.rob.robredpackage.redpackage;
  * User: xiaoming
  * Date: 2016-05-29
  * Time: 13:37
- * 抢红包流程,当抢红包开关打开就会进入这里
+ * QQ抢红包流程,当抢红包开关打开就会进入这里
  */
 
 import android.app.KeyguardManager;
@@ -29,12 +29,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by apple on 16/5/29.
+ * Created by apple on 16/11/16.
  */
-public class RedPackageCtrl {
+public class QQRedPackageCtrl {
 
     private static final String TAG = "RedPackageCtrl";
-    private static final String WECHAT_RED_PACKAGE = "[微信红包]";
+    private static final String WECHAT_RED_PACKAGE = "[QQ红包]";
     private boolean isAutoClickToRedPackageDetail = false;
     private boolean isAutoClickToRedPackageDialog = false;
     private boolean isAutoBackToChatActivity = false;

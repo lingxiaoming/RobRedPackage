@@ -27,6 +27,7 @@ import java.util.List;
 public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
     public static boolean robRedPackage = false;
+    public static boolean robredpackageQQ = false;
     public static boolean addNearFriend = false;
     public static boolean addGroupFriend = false;
     public static boolean openPackage = false;//拆红包声音
@@ -54,12 +55,13 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         myApplication = this;
-
+        lusis.gciklusis.gcik.a3.e.a(getApplicationContext());
         realRegisterCode = AndroidUtils.getMyCode();
 
         PrefsUtils.getInstance().saveBooleanByKey(Constants.PREF_KEY_REDPACKAGE, true);
         registerCode = PrefsUtils.getInstance().getActivationCode();
         robRedPackage = PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_REDPACKAGE);
+        robredpackageQQ = PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_REDPACKAGE_QQ);
         addNearFriend = PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_ADDNEAR);
         addGroupFriend = PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_ADDGROUP);
         openFloat = PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_OPEN_FLOAT);

@@ -37,6 +37,7 @@ import com.zyy.rob.robredpackage.view.AutoNextLineLayout;
 public class SettingFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private CheckBox cbRedPackage, cbAddNear, cbAddGroup, cbOpenFloat, cbOpenPackage, cbFilter, cbReply;
+    private CheckBox cbRedPackageQQ;
     private SeekBar sbRedPackage;
     private TextView tvCurrentTime;
     private TextView tvRedPackageInfoCount, tvRedPackageInfoMoney;
@@ -86,6 +87,8 @@ public class SettingFragment extends Fragment implements CompoundButton.OnChecke
         autoNextLineLayout = (AutoNextLineLayout) view.findViewById(R.id.auto_tv_filter);
         autoNextLineLayout2 = (AutoNextLineLayout) view.findViewById(R.id.auto_tv_reply);
 
+        cbRedPackageQQ = (CheckBox) view.findViewById(R.id.cb_red_package_qq);
+
         autoNextLineLayout.setType(0);
         autoNextLineLayout2.setType(1);
         autoNextLineLayout.addChildList(MyApplication.getInstance().filters);
@@ -95,6 +98,7 @@ public class SettingFragment extends Fragment implements CompoundButton.OnChecke
         ivAddReply.setOnClickListener(this);
 
         cbRedPackage.setOnCheckedChangeListener(this);
+        cbRedPackageQQ.setOnCheckedChangeListener(this);
         cbAddNear.setOnCheckedChangeListener(this);
         cbAddGroup.setOnCheckedChangeListener(this);
         cbOpenFloat.setOnCheckedChangeListener(this);
@@ -103,6 +107,7 @@ public class SettingFragment extends Fragment implements CompoundButton.OnChecke
         cbReply.setOnCheckedChangeListener(this);
 
         cbRedPackage.setChecked(PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_REDPACKAGE));
+        cbRedPackageQQ.setChecked(PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_REDPACKAGE_QQ));
         cbAddNear.setChecked(PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_ADDNEAR));
         cbAddGroup.setChecked(PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_KEY_ADDGROUP));
         cbOpenFloat.setChecked(PrefsUtils.getInstance().getBooleanByKey(Constants.PREF_OPEN_FLOAT));
@@ -141,6 +146,11 @@ public class SettingFragment extends Fragment implements CompoundButton.OnChecke
             case R.id.cb_red_package:
                 MyApplication.robRedPackage = isChecked;
                 PrefsUtils.getInstance().saveBooleanByKey(Constants.PREF_KEY_REDPACKAGE, isChecked);
+                break;
+
+            case R.id.cb_red_package_qq:
+                MyApplication.robredpackageQQ = isChecked;
+                PrefsUtils.getInstance().saveBooleanByKey(Constants.PREF_KEY_REDPACKAGE_QQ, isChecked);
                 break;
 
             case R.id.cb_near_add:

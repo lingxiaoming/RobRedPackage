@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        lusis.gciklusis.gcik.a3.e.a("5F7B99EEBCF06CBF57818607D9094297");//调用该方法才展示广告，调用一次，展示一次
 
         fragmentList = new ArrayList<>();
         fragmentList.add(HelpFragment.newInstance());

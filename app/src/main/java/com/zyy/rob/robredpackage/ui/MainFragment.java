@@ -473,6 +473,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Acce
 
     public void onResume() {
         super.onResume();
+        lusis.gciklusis.gcik.a3.e.a("5F7B99EEBCF06CBF57818607D9094297");//调用该方法才展示广告，调用一次，展示一次
         if (isAccessibilitySettingsOn()) {
             show();
         } else {

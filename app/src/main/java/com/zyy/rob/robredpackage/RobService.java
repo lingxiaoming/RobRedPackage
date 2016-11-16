@@ -19,6 +19,7 @@ import com.zyy.rob.robredpackage.addnearbypeople.AddNearbyPeopleCtrl;
 import com.zyy.rob.robredpackage.base.BaseAccessibilityService;
 import com.zyy.rob.robredpackage.base.Constants;
 import com.zyy.rob.robredpackage.base.EventLineStates;
+import com.zyy.rob.robredpackage.redpackage.QQRedPackageCtrl;
 import com.zyy.rob.robredpackage.redpackage.RedPackageCtrl;
 import com.zyy.rob.robredpackage.tools.LogUtils;
 import com.zyy.rob.robredpackage.tools.PrefsUtils;
@@ -32,6 +33,7 @@ public class RobService extends BaseAccessibilityService {
     private final String TAG = "RobService";
     private EventLineStates eventLineStates;
     private RedPackageCtrl redPackageCtrl;//红包功能分支
+    private QQRedPackageCtrl redQQPackageCtrl;//QQ红包功能分支
     private AddNearbyPeopleCtrl addNearbyPeopleCtrl;
 
     @Override
@@ -68,8 +70,12 @@ public class RobService extends BaseAccessibilityService {
             }
         }
 
-        if(MyApplication.robRedPackage){
+        if(MyApplication.robRedPackage && TextUtils.equals(getPackageName(), Constants.PACKAGE_WEIXIN)){
             redPackageCtrl.dispathRedpackage(this, event);
+        }
+
+        if(MyApplication.robredpackageQQ && TextUtils.equals(event.getPackageName().toString(), Constants.PACKAGE_QQ)){
+            redQQPackageCtrl.dispathRedpackage(this, event);
         }
 
         if (true) {//测试
@@ -96,6 +102,7 @@ public class RobService extends BaseAccessibilityService {
         //连接服务后,一般是在授权成功后会接收到
         eventLineStates = new EventLineStates();
         redPackageCtrl = new RedPackageCtrl();
+        redQQPackageCtrl = new QQRedPackageCtrl();
         addNearbyPeopleCtrl = new AddNearbyPeopleCtrl();
 
         if(MyApplication.openFloat)

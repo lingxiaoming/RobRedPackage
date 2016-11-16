@@ -6,11 +6,17 @@ package com.zyy.rob.robredpackage.base;
  * 要查找的NodeInfo所有的常量定义，包括text、class、id等
  */
 
+import org.w3c.dom.Text;
+
+import static android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+import static u.aly.av.Q;
+
 /**
  * Created by apple on 16/5/13.
  */
 public class Constants {
-    public static final String TEXT_WEIXINHONGBAO = "[微信红包]";
+    public static final String PACKAGE_WEIXIN = "com.tencent.mm";
+    public static final String PACKAGE_QQ = "com.tencent.mobileqq";
 
     public static final String ACTIVITY_MAIN = "com.tencent.mm.ui.LauncherUI";//微信主页面
     public static final String ACTIVITY_NEARBYLISTWARN = "com.tencent.mm.ui.base.h";//附近的人列表页面之前的提示确认
@@ -29,7 +35,7 @@ public class Constants {
     public static final String ACTIVITY_REDPACKAGE_SUCCESS = "com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyDetailUI";//领取红包成功
 
 
-    public static final String PREF_KEY_REDPACKAGE = "perf_key_redpackage";//自动抢红包开关key
+    public static final String PREF_KEY_REDPACKAGE = "perf_key_redpackage";//自动抢红包开关key(微信)
     public static final String PREF_KEY_ADDNEAR = "perf_key_addnear";//自动添加附近的人开关key
     public static final String PREF_KEY_ADDGROUP = "perf_key_addgroup";//自动添加组里的人开关key
     public static final String PREF_OPEN_FLOAT = "perf_open_float";//悬浮窗的开关
@@ -41,7 +47,13 @@ public class Constants {
     public static final String PREF_KEY_REPLY = "pref_reply";//回复词开关
 
 
+    public static final String ACTIVITY_MAIN_QQ = "com.tencent.mobileqq.activity.SplashActivity";//QQ主页面
+    public static final String ACTIVITY_CHAT_QQ = "";//QQ聊天页面      跟QQ主页面
+    public static final String DIALOG_QQ_REDPACKAGE = "";//QQ红包打开dialog    跟红包详情
+    public static final String ACTIVITY_REDPACKAGE_DETEAIL = "cooperation.qwallet.plugin.QWalletPluginProxyActivity";//红包领取详情
+
+    public static final String PREF_KEY_REDPACKAGE_QQ = "perf_key_redpackage_qq";//自动抢红包开关key(QQ)
+
     public static final String ACTION_FLOAT_CLOSE = "broadcast_float_closed";
     public static final String ACTION_SERVICE_CLOSE = "broadcast_service_closed";
-
 }
