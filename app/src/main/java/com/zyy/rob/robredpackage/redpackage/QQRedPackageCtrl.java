@@ -11,7 +11,6 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Rect;
-import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
@@ -24,7 +23,6 @@ import com.zyy.rob.robredpackage.tools.LogUtils;
 import com.zyy.rob.robredpackage.tools.PrefsUtils;
 
 import java.util.List;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -70,29 +68,12 @@ public class QQRedPackageCtrl {
                 break;
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
 
-                if (TextUtils.equals(event.getClassName().toString(), Constants.ACTIVITY_MAIN)) {//主页面与聊天页面同属一个activity
+                if (TextUtils.equals(event.getClassName().toString(), Constants.ACTIVITY_MAIN_QQ)) {//主页面与聊天页面同属一个activity
                     if (isAutoBackToChatActivity) {
                         isAutoBackToChatActivity = false;
 
                         if (robRedPackageSuccess) {//上次抢到红包了
                             robRedPackageSuccess = false;
-                            if (MyApplication.getInstance().replySwitch) {
-                                AccessibilityNodeInfo editNodeInfo = robService.findNodeInfoByClassName(event.getSource(), "android.widget.EditText");
-                                if (editNodeInfo != null) {
-                                    Bundle arguments = new Bundle();
-
-                                    int replysSize = MyApplication.getInstance().replys.size();
-                                    if (replysSize > 0) {
-                                        String reply = MyApplication.getInstance().replys.get(new Random().nextInt(replysSize));
-                                        arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, reply);
-                                        editNodeInfo.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
-                                        AccessibilityNodeInfo buttonNodeInfo = robService.findNodeInfoByTextAndClassName(event.getSource(), "发送", "android.widget.Button");
-                                        if (buttonNodeInfo != null) {
-                                            robService.performClick(buttonNodeInfo);
-                                        }
-                                    }
-                                }
-                            }
                         }
 
                         return;
@@ -218,9 +199,9 @@ public class QQRedPackageCtrl {
         AccessibilityNodeInfo rootNodeInfo = robService.getRootInActiveWindow();//得到rootView
         if (rootNodeInfo == null) return false;
 
-        AccessibilityNodeInfo backImageView = robService.findNodeInfoByContentDescribeAndClassName(rootNodeInfo, "返回", "android.widget.ImageView");
+        AccessibilityNodeInfo backImageView = robService.findNodeInfoByContentDescribeAndClassName(rootNodeInfo, "返回消息界面", "android.widget.TextView");
 
-        if (backImageView != null && TextUtils.equals(MyApplication.topClassname, Constants.ACTIVITY_MAIN)) {
+        if (backImageView != null && TextUtils.equals(MyApplication.topClassname, Constants.ACTIVITY_MAIN_QQ)) {
             return true;
         }
 
@@ -230,12 +211,12 @@ public class QQRedPackageCtrl {
     private boolean findLatestRedPackageAndClickIt(RobService robService, AccessibilityNodeInfo listviewNodeInfo) {
         if (robService == null || listviewNodeInfo == null) return false;
 
-        AccessibilityNodeInfo listNodeInfo = robService.findLatestNodeInfoByClassName(listviewNodeInfo, "android.widget.ListView");
+        AccessibilityNodeInfo listNodeInfo = robService.findLatestNodeInfoByClassName(listviewNodeInfo, "android.widget.AbsListView");
         if (listNodeInfo == null) return false;
 
         AccessibilityNodeInfo lastItemOfList = listNodeInfo.getChild(listNodeInfo.getChildCount() - 1);
         if (lastItemOfList != null) {
-            AccessibilityNodeInfo lastItemHasRedpackage = robService.findNodeInfoByText(lastItemOfList, "领取红包");
+            AccessibilityNodeInfo lastItemHasRedpackage = robService.findNodeInfoByText(lastItemOfList, "点击拆开");
             if (lastItemHasRedpackage != null) {
                 return clickGetRedPackageTextNodeInfo(robService, lastItemHasRedpackage);
             }

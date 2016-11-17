@@ -55,7 +55,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         myApplication = this;
-        lusis.gciklusis.gcik.a3.e.a(getApplicationContext());
         realRegisterCode = AndroidUtils.getMyCode();
 
         PrefsUtils.getInstance().saveBooleanByKey(Constants.PREF_KEY_REDPACKAGE, true);
